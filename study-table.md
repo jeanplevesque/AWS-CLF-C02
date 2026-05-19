@@ -52,6 +52,7 @@ In short: use CUR when you need raw, comprehensive data for custom reporting, ch
 | AWS Batch | Run and scale batch computing jobs. |
 | Amazon EC2 | Resizable virtual servers in the cloud. |
 | AWS Elastic Beanstalk | Managed platform for quickly deploying and scaling traditional web apps and APIs without managing the underlying infrastructure yourself. |
+| AWS Lambda | Serverless compute for event-driven code, APIs, automation, and data processing without managing servers or clusters. |
 | Amazon Lightsail | Low-cost simplified VPS platform for small websites, blogs, dev/test environments, and basic business apps with predictable monthly pricing. |
 | AWS Outposts | Extends AWS infrastructure on premises for hybrid workloads that need low latency to local systems, local processing, or data residency. |
 
@@ -59,9 +60,10 @@ In short: use CUR when you need raw, comprehensive data for custom reporting, ch
 
 | Service | Short description |
 | --- | --- |
-| Amazon Elastic Container Registry (Amazon ECR) | Managed container image registry for ECS, EKS, and other runtimes. |
-| Amazon Elastic Container Service (Amazon ECS) | Managed container orchestration service that can run on EC2 or Fargate. |
-| Amazon Elastic Kubernetes Service (Amazon EKS) | Managed Kubernetes on AWS that can run with EC2 or Fargate. |
+| Amazon Elastic Container Registry (Amazon ECR) | Managed registry for storing, scanning, signing, and sharing container images and artifacts used by ECS, EKS, and CI/CD pipelines. |
+| Amazon Elastic Container Service (Amazon ECS) | AWS-native container orchestration for running containerized apps, microservices, and batch workloads on EC2 or with serverless Fargate. |
+| Amazon Elastic Kubernetes Service (Amazon EKS) | Managed Kubernetes for teams that want Kubernetes-compatible tooling and portability for cloud-native, hybrid, or large-scale container workloads on EC2 or Fargate. |
+| AWS Fargate | Serverless, pay-as-you-go compute engine for containers running on ECS or EKS when you want containers without managing servers. |
 
 ## Customer Enablement
 
@@ -151,13 +153,13 @@ In short: AppStream 2.0 is for individual apps, WorkSpaces is for complete deskt
 
 ### Governance and Administration
 
-| Service | Short description | How to tell it apart |
-| --- | --- | --- |
-| AWS Control Tower | Set up and govern multi-account AWS environments. | Landing-zone service: builds a governed multi-account environment using AWS best practices and preconfigured controls. |
-| AWS Organizations | Govern and manage multiple AWS accounts. | Foundation for multi-account management: group accounts, apply policies, and manage consolidated billing. |
-| AWS Service Catalog | Approved self-service cloud products. | Curated catalog of approved products users can launch. |
-| AWS License Manager | Track and control software licenses. | Focused on software license tracking and control. |
-| AWS Management Console | Web interface for managing AWS. | Just the browser-based interface to use AWS services; it does not itself set governance rules. |
+| Service | Short description |
+| --- | --- |
+| AWS Control Tower | Landing-zone service to establish and govern a multi-account AWS environment using AWS best practices and preconfigured controls. |
+| AWS Organizations | Foundation for multi-account management: group accounts, apply policies, and manage consolidated billing across AWS accounts. |
+| AWS Service Catalog | Create and govern a curated catalog of approved cloud products and IaC templates that users can launch through self-service. |
+| AWS License Manager | Manage, track, and control software licenses across AWS and on-premises environments. |
+| AWS Management Console | Web interface that provides centralized access to AWS services and account tools; it is the UI, not the governance service itself. |
 
 Study shortcut: Organizations manages accounts, Control Tower sets up and governs the multi-account environment, and the Management Console is the UI you use to work with AWS.
 
@@ -217,56 +219,49 @@ When to use which: use Direct Connect when you want a dedicated private link to 
 
 ### Compliance and Audit
 
-| Service | Short description | How to tell it apart |
-| --- | --- | --- |
-| AWS Artifact | On-demand AWS compliance reports and agreements. | Read AWS compliance reports and accept agreements. |
-| AWS Audit Manager | Collect audit evidence continuously. | Automates evidence collection for audits and assessments. |
+| Service | Short description |
+| --- | --- |
+| AWS Artifact | On-demand access to AWS and ISV compliance reports and certain agreements; use it to read reports and accept agreements. |
+| AWS Audit Manager | Continuously collects audit evidence and maps it to frameworks to simplify audits and assessments. |
 
 ### Identity, Directory, and Access
 
-| Service | Short description | How to tell it apart |
-| --- | --- | --- |
-| AWS Identity and Access Management (IAM) | Manage access with users, roles, and policies. | Core AWS permissions service for users, roles, and policies. |
-| AWS IAM Identity Center | Workforce access and single sign-on. | Workforce SSO and centralized multi-account access. |
-| Amazon Cognito | User sign-up, sign-in, and access control. | Customer app identity for end users and apps. |
-| AWS Directory Service | Managed Microsoft AD and directory options. | Managed Active Directory for AD-dependent workloads. |
-| AWS Resource Access Manager (AWS RAM) | Share AWS resources across accounts. | Shares resources across AWS accounts. |
+| Service | Short description |
+| --- | --- |
+| AWS Identity and Access Management (IAM) | Core AWS permissions service for managing access with users, roles, and policies. |
+| AWS IAM Identity Center | Workforce single sign-on and centralized multi-account access to AWS accounts and applications. |
+| Amazon Cognito | Customer identity service for end-user sign-up, sign-in, and access control in applications. |
+| AWS Directory Service | Managed Microsoft Active Directory and related directory options for AD-dependent workloads. |
+| AWS Resource Access Manager (AWS RAM) | Securely share supported AWS resources across AWS accounts. |
 
 ### Data Protection and Key Management
 
-| Service | Short description | How to tell it apart |
-| --- | --- | --- |
-| AWS Certificate Manager (ACM) | Provision and manage TLS certificates. | For SSL/TLS certificates, not keys or secrets. |
-| AWS Key Management Service (AWS KMS) | Create and control encryption keys. | Managed encryption keys and cryptographic operations. |
-| AWS CloudHSM | Dedicated hardware security modules. | Single-tenant HSM (Hardware Security Module) control when you manage the hardware-backed keys. The cryptographic operations happen inside specialized hardware rather than in normal application memory, which gives stronger security and helps with compliance requirements |
-| AWS Secrets Manager | Store and rotate secrets securely. | Stores and rotates passwords, API keys, and secrets. |
-| Amazon Macie | Discover and protect sensitive data in S3. | Sensitive-data discovery tool: uses ML and pattern matching to find data like PII in S3 and highlight data security risks. |
+| Service | Short description |
+| --- | --- |
+| AWS Certificate Manager (ACM) | Provision and manage public and private SSL/TLS certificates; use it for certificates, not keys or secrets. |
+| AWS Key Management Service (AWS KMS) | Managed service to create and control encryption keys and perform cryptographic operations. |
+| AWS CloudHSM | Single-tenant hardware security modules that you manage when you need dedicated hardware-backed key control and stronger compliance alignment. |
+| AWS Secrets Manager | Store, manage, and rotate passwords, API keys, and other secrets securely. |
+| Amazon Macie | Data security service that discovers sensitive data like PII in S3 and highlights data security risks using ML and pattern matching. |
 
 ### Detection and Investigation
 
-| Service | Short description | How to tell it apart |
-| --- | --- | --- |
-| Amazon GuardDuty | Intelligent threat detection for AWS. | Detects threats and produces findings. |
-| Amazon Inspector | Automated vulnerability management and exposure scanning. | Vulnerability scanner: automatically discovers and scans EC2, container images, Lambda, and code repositories for software issues and network exposure. |
-| Amazon Detective | Analyze and visualize security data to investigate findings. | Investigation tool: uses log data, ML, and graph relationships from AWS resources to help explain who did what and when. |
-| AWS Security Hub | Centralize security findings and posture. | Aggregates signals from AWS and partner security tools. |
+| Service | Short description |
+| --- | --- |
+| Amazon GuardDuty | Intelligent threat detection service that monitors AWS accounts, workloads, and data and produces security findings. |
+| Amazon Inspector | Vulnerability management service that automatically discovers and scans workloads and code repositories for software issues and unintended network exposure. |
+| Amazon Detective | Investigation service that analyzes and visualizes security data and relationships to explain findings and activity. |
+| AWS Security Hub | Central security service that correlates, prioritizes, and helps respond to findings and posture signals from AWS and partner tools. |
 
 Study shortcut: GuardDuty detects threats, Detective investigates them, Inspector finds vulnerabilities, and Macie finds sensitive data.
 
 ### Network and Application Protection
 
-| Service | Short description | How to tell it apart |
-| --- | --- | --- |
-| AWS WAF | Web application firewall for HTTP apps. | Blocks web exploits, bots, and bad HTTP requests. |
-| AWS Shield | Managed DDoS protection. | For DDoS protection, especially advanced mitigation. |
-| AWS Firewall Manager | Centrally manage firewall rules and protections. | Pushes WAF and firewall policies across accounts and resources. |
-
-## Serverless
-
 | Service | Short description |
 | --- | --- |
-| AWS Fargate | Serverless compute for containers used by ECS or EKS. |
-| AWS Lambda | Run code without managing servers. |
+| AWS WAF | Web application firewall for HTTP applications that blocks common exploits, bots, and unwanted web requests. |
+| AWS Shield | Managed protection for applications and networks against DDoS attacks, especially when you need advanced mitigation. |
+| AWS Firewall Manager | Centrally deploy and manage WAF, Shield, and firewall policies across accounts and resources. |
 
 ## Storage
 
