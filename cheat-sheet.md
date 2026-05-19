@@ -201,6 +201,18 @@ AWS Well-Architected helps you evaluate workloads against best practices.
 - Cost Explorer helps visualize and forecast spending.
 - CUR gives raw detailed cost and usage data for custom analysis.
 
+### AWS Organizations, OUs, and SCPs
+
+- AWS Organizations helps centrally govern multiple AWS accounts.
+- An organizational unit (OU) is a way to group accounts so you can manage them as a single unit.
+- OUs can be nested, and accounts inherit applicable organization policies from parent levels.
+- Use OUs to separate environments or functions such as production, sandbox, security, or workloads by business unit.
+- A service control policy (SCP) is an organization policy that sets the maximum available permissions for member accounts.
+- SCPs do not grant permissions. IAM or resource-based policies must still allow the action.
+- Effective access in a member account must be allowed by both the applicable SCPs and the account's IAM permissions.
+- SCPs affect member accounts, including their root users, but do not affect users or roles in the management account.
+- Exam shortcut: OU = account grouping and policy inheritance. SCP = permission guardrail across member accounts.
+
 ### AWS Support plans
 
 - Basic Support: included for all accounts.
@@ -235,6 +247,8 @@ AWS Well-Architected helps you evaluate workloads against best practices.
 | Predictable compute with commitment | Savings Plans or Reserved Instances |
 | Interruptible discounted compute | Spot Instances |
 | Centralized multi-account governance | AWS Organizations |
+| Group accounts for governance by environment or function | Organizational units (OUs) |
+| Set maximum permissions across member accounts | Service control policies (SCPs) |
 | Review workload design against best practices | AWS Well-Architected Framework |
 
 ## Sources Checked
@@ -251,4 +265,8 @@ AWS Well-Architected helps you evaluate workloads against best practices.
 - https://aws.amazon.com/ec2/pricing/
 - https://docs.aws.amazon.com/IAM/latest/UserGuide/id.html
 - https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies.html
+- https://aws.amazon.com/organizations/
+- https://aws.amazon.com/organizations/features/
+- https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_ous.html
+- https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_scps.html
 - https://builder.aws.com/content/2cKbgI3WsAYTiDM0J48uEMVqOVW/understanding-the-7-rs-cloud-migration-strategies
