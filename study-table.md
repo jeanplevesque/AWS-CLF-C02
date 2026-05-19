@@ -6,10 +6,10 @@ Concise study summaries based on current official AWS product and documentation 
 
 | Service | Very short description |
 | --- | --- |
-| Amazon Athena | Serverless SQL queries on S3 data. |
+| Amazon Athena | Serverless SQL queries on S3 and other data sources. |
 | Amazon EMR | Managed big data platform for Spark, Hadoop, and analytics. |
-| AWS Glue | Serverless data integration and ETL. |
-| Amazon Kinesis | Real-time data streaming and processing. |
+| AWS Glue | Serverless data integration, ETL, and data catalog. |
+| Amazon Kinesis | Collect, process, and analyze real-time video and data streams. |
 | Amazon OpenSearch Service | Managed search, log analytics, and observability. |
 | Amazon QuickSight | Serverless business intelligence dashboards and analytics. |
 | Amazon Redshift | Cloud data warehouse for analytics. |
@@ -67,12 +67,12 @@ Concise study summaries based on current official AWS product and documentation 
 
 | Service | Very short description |
 | --- | --- |
-| Amazon Aurora | High-performance MySQL/PostgreSQL-compatible relational database. |
+| Amazon Aurora | High-performance MySQL- and PostgreSQL-compatible relational database. |
 | Amazon DocumentDB | Managed document database with MongoDB compatibility. |
-| Amazon DynamoDB | Serverless NoSQL key-value database. |
-| Amazon ElastiCache | Managed in-memory caching service. |
+| Amazon DynamoDB | Serverless NoSQL key-value and document database. |
+| Amazon ElastiCache | Managed in-memory caching with Valkey, Redis OSS, or Memcached. |
 | Amazon Neptune | Managed graph database service. |
-| Amazon RDS | Managed relational database service. |
+| Amazon RDS | Managed relational database service across multiple database engines. |
 
 ## Developer Tools
 
@@ -114,10 +114,10 @@ In short: AppStream 2.0 is for individual apps, WorkSpaces is for complete deskt
 | --- | --- |
 | Amazon Comprehend | Natural language processing for text insights. |
 | Amazon Kendra | Intelligent enterprise search service. |
-| Amazon Lex | Build conversational voice and text bots. |
+| Amazon Lex | Build conversational AI chatbots and voice interfaces. |
 | Amazon Polly | Turn text into lifelike speech. |
 | Amazon Q | Generative AI assistant for work and AWS. |
-| Amazon Rekognition | Analyze images and video with AI. |
+| Amazon Rekognition | Analyze images and video for objects, faces, text, and moderation. |
 | Amazon SageMaker AI | Build, train, and deploy ML models. |
 | Amazon Textract | Extract text and data from documents. |
 | Amazon Transcribe | Automatic speech-to-text transcription. |
@@ -160,7 +160,7 @@ In short: AppStream 2.0 is for individual apps, WorkSpaces is for complete deskt
 
 | Service | Very short description |
 | --- | --- |
-| Amazon API Gateway | Create, publish, and manage APIs. |
+| Amazon API Gateway | Create, publish, and secure REST, HTTP, and WebSocket APIs. |
 | Amazon CloudFront | Global content delivery network. |
 | AWS Direct Connect | Dedicated private network link to AWS. |
 | AWS Global Accelerator | Improve global app performance and availability. |
@@ -211,7 +211,7 @@ In short: AppStream 2.0 is for individual apps, WorkSpaces is for complete deskt
 | Amazon Elastic Block Store (Amazon EBS) | Block storage for EC2 instances. |
 | Amazon Elastic File System (Amazon EFS) | Elastic shared file storage for Linux workloads. |
 | AWS Elastic Disaster Recovery | Low-cost disaster recovery to AWS. |
-| Amazon FSx | Managed high-performance file systems. |
+| Amazon FSx | Managed high-performance file systems for Windows, Lustre, OpenZFS, and ONTAP. |
 | Amazon S3 | Scalable object storage service. |
 | Amazon S3 Glacier | Low-cost archival storage classes in S3. |
 | AWS Storage Gateway | Hybrid storage between on-premises and AWS. |
