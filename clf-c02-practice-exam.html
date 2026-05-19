@@ -1,0 +1,1775 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AWS CLF-C02 Hard Practice Exam</title>
+  <style>
+    :root {
+      --bg-deep: #0f2b31;
+      --bg-mid: #1e4f57;
+      --bg-warm: #f3ebd8;
+      --panel: rgba(255, 250, 241, 0.92);
+      --panel-strong: #fffaf0;
+      --ink: #162327;
+      --muted: #586c71;
+      --accent: #0f7a7a;
+      --accent-strong: #0b5f5f;
+      --accent-warm: #c46b31;
+      --good: #1b7b59;
+      --good-soft: #ddf3e8;
+      --bad: #a7382d;
+      --bad-soft: #f8dfdb;
+      --border: rgba(22, 35, 39, 0.12);
+      --shadow: 0 24px 60px rgba(7, 26, 31, 0.2);
+      --radius: 24px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      min-height: 100%;
+    }
+
+    body {
+      font-family: "Bahnschrift", "Aptos", "Segoe UI Variable Text", sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top left, rgba(245, 210, 122, 0.72), transparent 26%),
+        radial-gradient(circle at bottom right, rgba(32, 132, 137, 0.48), transparent 28%),
+        linear-gradient(135deg, var(--bg-deep) 0%, var(--bg-mid) 44%, #dfd3b7 44%, var(--bg-warm) 100%);
+      background-attachment: fixed;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background:
+        linear-gradient(rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02)),
+        repeating-linear-gradient(
+          90deg,
+          rgba(255, 255, 255, 0.03) 0,
+          rgba(255, 255, 255, 0.03) 1px,
+          transparent 1px,
+          transparent 32px
+        );
+      mix-blend-mode: soft-light;
+    }
+
+    h1,
+    h2,
+    h3 {
+      font-family: "Constantia", "Palatino Linotype", "Book Antiqua", serif;
+      margin: 0;
+      letter-spacing: 0.01em;
+    }
+
+    button {
+      font: inherit;
+    }
+
+    .shell {
+      width: min(980px, calc(100% - 32px));
+      margin: 32px auto 48px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero,
+    .panel {
+      background: var(--panel);
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(12px);
+    }
+
+    .hero {
+      padding: 24px 24px 18px;
+      margin-bottom: 18px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: auto -80px -80px auto;
+      width: 220px;
+      height: 220px;
+      border-radius: 999px;
+      background: radial-gradient(circle, rgba(196, 107, 49, 0.26), transparent 68%);
+      pointer-events: none;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(15, 122, 122, 0.1);
+      color: var(--accent-strong);
+      font-size: 0.84rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--accent-warm));
+      box-shadow: 0 0 0 4px rgba(15, 122, 122, 0.12);
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.9fr) minmax(260px, 1fr);
+      gap: 24px;
+      align-items: end;
+    }
+
+    .hero p {
+      margin: 12px 0 0;
+      color: var(--muted);
+      max-width: 62ch;
+      line-height: 1.55;
+    }
+
+    .hero-stats {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .stat-card {
+      background: rgba(255, 255, 255, 0.58);
+      border: 1px solid rgba(22, 35, 39, 0.08);
+      border-radius: 18px;
+      padding: 14px 16px;
+    }
+
+    .stat-label {
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      margin-bottom: 6px;
+      display: block;
+    }
+
+    .stat-value {
+      font-size: 1.4rem;
+      font-weight: 700;
+    }
+
+    .panel {
+      padding: 24px;
+      animation: rise-in 340ms ease;
+    }
+
+    .panel[hidden] {
+      display: none;
+    }
+
+    .intro-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      margin: 20px 0 24px;
+    }
+
+    .feature-card {
+      padding: 18px;
+      border-radius: 20px;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.82), rgba(243, 235, 216, 0.74));
+      border: 1px solid var(--border);
+    }
+
+    .feature-card h3 {
+      font-size: 1.04rem;
+      margin-bottom: 8px;
+    }
+
+    .feature-card p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .btn,
+    .option-btn {
+      border: 0;
+      border-radius: 16px;
+      cursor: pointer;
+      transition: transform 160ms ease, box-shadow 160ms ease, background 160ms ease, border-color 160ms ease;
+    }
+
+    .btn {
+      padding: 14px 18px;
+      min-height: 52px;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+    }
+
+    .btn:disabled {
+      cursor: not-allowed;
+      opacity: 0.56;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .btn-primary {
+      color: #fffaf4;
+      background: linear-gradient(135deg, var(--accent-strong), var(--accent));
+      box-shadow: 0 14px 28px rgba(15, 122, 122, 0.22);
+    }
+
+    .btn-secondary {
+      color: var(--ink);
+      background: rgba(255, 255, 255, 0.88);
+      border: 1px solid var(--border);
+    }
+
+    .btn:hover:not(:disabled),
+    .option-btn:hover:not(:disabled) {
+      transform: translateY(-2px);
+    }
+
+    .exam-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      align-items: end;
+      margin-bottom: 18px;
+    }
+
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-size: 0.84rem;
+      font-weight: 700;
+      background: rgba(15, 122, 122, 0.1);
+      color: var(--accent-strong);
+    }
+
+    .progress-wrap {
+      display: grid;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+
+    .progress-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      color: var(--muted);
+      font-size: 0.94rem;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 12px;
+      border-radius: 999px;
+      background: rgba(22, 35, 39, 0.08);
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      width: 0;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--accent), var(--accent-warm));
+      transition: width 220ms ease;
+    }
+
+    .question-card {
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.84), rgba(255, 249, 239, 0.9));
+      border-radius: 24px;
+      padding: 22px;
+      border: 1px solid var(--border);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
+    }
+
+    .question-number {
+      color: var(--accent-warm);
+      font-weight: 700;
+      font-size: 0.92rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 10px;
+      display: block;
+    }
+
+    .question-text {
+      font-size: clamp(1.16rem, 1.4vw, 1.42rem);
+      line-height: 1.45;
+      margin: 0;
+    }
+
+    .options {
+      display: grid;
+      gap: 12px;
+      margin: 22px 0 18px;
+    }
+
+    .option-btn {
+      width: 100%;
+      text-align: left;
+      background: var(--panel-strong);
+      border: 1px solid rgba(22, 35, 39, 0.1);
+      padding: 16px 18px;
+      display: grid;
+      grid-template-columns: 36px minmax(0, 1fr);
+      gap: 14px;
+      align-items: start;
+      min-height: 70px;
+      box-shadow: 0 8px 18px rgba(15, 43, 49, 0.06);
+    }
+
+    .option-btn:disabled {
+      cursor: default;
+      opacity: 1;
+    }
+
+    .option-index {
+      width: 36px;
+      height: 36px;
+      border-radius: 12px;
+      display: inline-grid;
+      place-items: center;
+      font-weight: 800;
+      background: rgba(15, 122, 122, 0.08);
+      color: var(--accent-strong);
+      border: 1px solid rgba(15, 122, 122, 0.12);
+    }
+
+    .option-text {
+      line-height: 1.45;
+      padding-top: 2px;
+    }
+
+    .option-btn.correct {
+      background: var(--good-soft);
+      border-color: rgba(27, 123, 89, 0.28);
+      box-shadow: 0 10px 22px rgba(27, 123, 89, 0.14);
+    }
+
+    .option-btn.correct .option-index {
+      background: var(--good);
+      border-color: var(--good);
+      color: #f6fff9;
+    }
+
+    .option-btn.incorrect {
+      background: var(--bad-soft);
+      border-color: rgba(167, 56, 45, 0.24);
+      box-shadow: 0 10px 22px rgba(167, 56, 45, 0.12);
+    }
+
+    .option-btn.incorrect .option-index {
+      background: var(--bad);
+      border-color: var(--bad);
+      color: #fff8f7;
+    }
+
+    .feedback {
+      border-radius: 20px;
+      padding: 18px;
+      border: 1px solid transparent;
+      display: grid;
+      gap: 8px;
+      line-height: 1.55;
+      animation: rise-in 260ms ease;
+    }
+
+    .feedback.correct {
+      background: var(--good-soft);
+      color: #143e2e;
+      border-color: rgba(27, 123, 89, 0.22);
+    }
+
+    .feedback.incorrect {
+      background: var(--bad-soft);
+      color: #5b211b;
+      border-color: rgba(167, 56, 45, 0.18);
+    }
+
+    .feedback strong {
+      font-size: 1rem;
+    }
+
+    .footer-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: center;
+      margin-top: 18px;
+      flex-wrap: wrap;
+    }
+
+    .hint {
+      color: var(--muted);
+      font-size: 0.94rem;
+    }
+
+    .results-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(280px, 0.8fr);
+      gap: 18px;
+      margin: 18px 0 24px;
+    }
+
+    .result-card,
+    .review-item {
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.88), rgba(250, 243, 229, 0.9));
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      padding: 18px;
+    }
+
+    .score-ring {
+      width: 130px;
+      height: 130px;
+      border-radius: 50%;
+      margin: 0 auto 14px;
+      display: grid;
+      place-items: center;
+      background: conic-gradient(var(--accent) 0deg, var(--accent-warm) 0deg, rgba(22, 35, 39, 0.08) 0deg);
+      position: relative;
+    }
+
+    .score-ring::after {
+      content: "";
+      position: absolute;
+      inset: 12px;
+      border-radius: 50%;
+      background: var(--panel-strong);
+    }
+
+    .score-ring span {
+      position: relative;
+      z-index: 1;
+      font-size: 1.7rem;
+      font-weight: 800;
+    }
+
+    .summary-list,
+    .review-list {
+      display: grid;
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .summary-line {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      color: var(--ink);
+    }
+
+    .review-item h3 {
+      font-size: 1.04rem;
+      margin-bottom: 10px;
+    }
+
+    .review-item p {
+      margin: 8px 0 0;
+      line-height: 1.5;
+    }
+
+    .review-item .label {
+      color: var(--muted);
+      font-weight: 700;
+      display: inline-block;
+      min-width: 118px;
+    }
+
+    .muted {
+      color: var(--muted);
+    }
+
+    .empty-state {
+      padding: 18px;
+      border-radius: 18px;
+      background: rgba(27, 123, 89, 0.08);
+      border: 1px solid rgba(27, 123, 89, 0.14);
+      color: #194231;
+    }
+
+    @keyframes rise-in {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (max-width: 840px) {
+      .hero-grid,
+      .results-grid,
+      .intro-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .exam-top,
+      .footer-row,
+      .progress-header {
+        align-items: start;
+      }
+    }
+
+    @media (max-width: 620px) {
+      .shell {
+        width: min(100% - 20px, 980px);
+        margin: 20px auto 36px;
+      }
+
+      .hero,
+      .panel {
+        padding: 18px;
+        border-radius: 22px;
+      }
+
+      .option-btn {
+        grid-template-columns: 32px minmax(0, 1fr);
+        gap: 12px;
+        padding: 14px;
+      }
+
+      .option-index {
+        width: 32px;
+        height: 32px;
+        border-radius: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header class="hero">
+      <div class="eyebrow">AWS Cloud Practitioner CLF-C02</div>
+      <div class="hero-grid">
+        <div>
+          <h1>Hard Practice Exam</h1>
+          <p>
+            Standalone local HTML exam with 65 single-best-answer questions, immediate validation on selection,
+            scenario-heavy wording, and end-of-exam review. Built from the repository study notes checked on 2026-05-19.
+          </p>
+        </div>
+        <div class="hero-stats" aria-label="Exam overview">
+          <div class="stat-card">
+            <span class="stat-label">Questions</span>
+            <span class="stat-value">65</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label">Mode</span>
+            <span class="stat-value">Hard</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label">Validation</span>
+            <span class="stat-value">Instant</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label">Format</span>
+            <span class="stat-value">Offline</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <section class="panel" id="intro-panel">
+      <h2>Exam Rules</h2>
+      <div class="intro-grid">
+        <article class="feature-card">
+          <h3>One Question At A Time</h3>
+          <p>Only the current question is shown. Select one option to lock your answer and reveal feedback.</p>
+        </article>
+        <article class="feature-card">
+          <h3>Immediate Validation</h3>
+          <p>Each selection is graded instantly, with the correct answer and a short explanation shown right away.</p>
+        </article>
+        <article class="feature-card">
+          <h3>Harder Than Basic Flashcards</h3>
+          <p>Most questions are scenario-driven and use nearby AWS services as distractors instead of obvious mismatches.</p>
+        </article>
+      </div>
+      <div class="actions">
+        <button class="btn btn-primary" id="start-btn" type="button">Start Exam</button>
+      </div>
+    </section>
+
+    <section class="panel" id="exam-panel" hidden>
+      <div class="exam-top">
+        <div>
+          <h2 id="panel-title">Question</h2>
+          <div class="meta">
+            <span class="chip" id="domain-chip">Domain</span>
+            <span class="chip">Single best answer</span>
+            <span class="chip">Hard mode</span>
+          </div>
+        </div>
+        <div class="muted" id="score-inline" aria-live="polite">Score: 0 / 0</div>
+      </div>
+
+      <div class="progress-wrap" aria-live="polite">
+        <div class="progress-header">
+          <span id="progress-label">Question 1 of 65</span>
+          <span id="answered-label">Answered 0 of 65</span>
+        </div>
+        <div class="progress-bar" aria-hidden="true">
+          <div class="progress-fill" id="progress-fill"></div>
+        </div>
+      </div>
+
+      <article class="question-card" id="question-card">
+        <span class="question-number" id="question-number">Question 1</span>
+        <p class="question-text" id="question-text"></p>
+        <div class="options" id="options"></div>
+        <div id="feedback-slot"></div>
+      </article>
+
+      <div class="footer-row">
+        <div class="hint" id="hint-text">Tip: use keys 1-4 to answer, then Enter for next.</div>
+        <div class="actions">
+          <button class="btn btn-secondary" id="restart-btn" type="button">Restart</button>
+          <button class="btn btn-primary" id="next-btn" type="button" disabled>Next Question</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel" id="results-panel" hidden>
+      <h2>Results</h2>
+      <p class="muted" id="results-summary"></p>
+
+      <div class="results-grid">
+        <article class="result-card">
+          <div class="score-ring" id="score-ring" aria-hidden="true"><span id="score-percent">0%</span></div>
+          <div class="summary-list" id="summary-list"></div>
+        </article>
+        <article class="result-card">
+          <h3>Weakest Areas</h3>
+          <div class="summary-list" id="domain-breakdown"></div>
+        </article>
+      </div>
+
+      <div class="actions" style="margin-bottom: 18px;">
+        <button class="btn btn-primary" id="retry-missed-btn" type="button">Retry Missed Questions</button>
+        <button class="btn btn-secondary" id="restart-full-btn" type="button">Restart Full Exam</button>
+      </div>
+
+      <h3>Review</h3>
+      <div class="review-list" id="review-list"></div>
+    </section>
+  </div>
+
+  <script>
+    const questionBank = [
+      {
+        domain: "Identity and Access",
+        prompt: "A company already has a workforce identity provider and wants employees to sign in once to multiple AWS accounts and AWS applications. It does not need consumer sign-up features. Which service is the best fit?",
+        options: [
+          "AWS Identity and Access Management (IAM)",
+          "AWS IAM Identity Center",
+          "Amazon Cognito",
+          "AWS Directory Service"
+        ],
+        answer: 1,
+        explanation: "IAM Identity Center is AWS's recommended service for workforce SSO and centralized multi-account access. Amazon Cognito is aimed at customer or application end users rather than employee access across AWS accounts."
+      },
+      {
+        domain: "Identity and Access",
+        prompt: "A retail mobile app needs end-user sign-up, sign-in, and access tokens for customers using the app. Which AWS service fits this requirement best?",
+        options: [
+          "Amazon Cognito",
+          "AWS IAM Identity Center",
+          "AWS Resource Access Manager (AWS RAM)",
+          "AWS Organizations"
+        ],
+        answer: 0,
+        explanation: "Amazon Cognito is the customer identity service for application users. IAM Identity Center focuses on workforce access to AWS accounts and applications."
+      },
+      {
+        domain: "Identity and Access",
+        prompt: "An application running on Amazon EC2 needs temporary permission to write objects to Amazon S3 without embedding long-term credentials on the instance. What should be used?",
+        options: [
+          "An IAM group attached to the instance",
+          "An IAM role attached to the instance",
+          "The AWS account root user credentials",
+          "An Amazon Cognito identity pool"
+        ],
+        answer: 1,
+        explanation: "An IAM role provides temporary credentials to the EC2 instance. That is the preferred pattern over storing long-term access keys."
+      },
+      {
+        domain: "Identity and Access",
+        prompt: "An IAM principal is allowed all Amazon S3 actions by one policy, but another applicable policy explicitly denies s3:DeleteObject. What happens when the principal tries to delete an object?",
+        options: [
+          "The action succeeds because allow is broader",
+          "The action succeeds if the bucket policy allows it",
+          "The action is denied because explicit deny overrides allow",
+          "The result is random until policy order is changed"
+        ],
+        answer: 2,
+        explanation: "In AWS policy evaluation, explicit deny always overrides allow. Policy order does not change that result."
+      },
+      {
+        domain: "Identity and Access",
+        prompt: "Which statement reflects AWS best practice for the account root user?",
+        options: [
+          "Use the root user for daily administration because it has complete access",
+          "Create access keys for the root user so automation will not fail",
+          "Enable MFA on the root user and avoid using it except when required",
+          "Place the root user in an IAM group with limited permissions"
+        ],
+        answer: 2,
+        explanation: "The root user has full account access and should not be used for everyday work. MFA should be enabled, especially for privileged access."
+      },
+      {
+        domain: "Networking and Security",
+        prompt: "A team wants a stateful virtual firewall attached to an instance's network interface. Return traffic should be allowed automatically when the inbound rule permits the original request. Which construct fits?",
+        options: [
+          "Network ACL",
+          "Security group",
+          "AWS WAF",
+          "AWS Shield"
+        ],
+        answer: 1,
+        explanation: "Security groups are stateful and operate at the instance or ENI level. Network ACLs are stateless and operate at the subnet level."
+      },
+      {
+        domain: "Networking and Security",
+        prompt: "A security team wants subnet-level numbered rules that can both allow and deny traffic, and because the rules are stateless, return traffic must be allowed separately. What should they use?",
+        options: [
+          "Security group",
+          "AWS Firewall Manager",
+          "Network ACL",
+          "Amazon Route 53 Resolver"
+        ],
+        answer: 2,
+        explanation: "Network ACLs are subnet-level, support allow and deny rules, and are stateless, so return traffic needs its own rule."
+      },
+      {
+        domain: "Security Operations",
+        prompt: "Which service continuously monitors AWS accounts, workloads, and data for malicious activity and produces intelligent threat findings?",
+        options: [
+          "Amazon Inspector",
+          "Amazon GuardDuty",
+          "Amazon Detective",
+          "AWS Audit Manager"
+        ],
+        answer: 1,
+        explanation: "Amazon GuardDuty is the threat detection service. Inspector focuses on vulnerabilities, and Detective helps investigate findings."
+      },
+      {
+        domain: "Security Operations",
+        prompt: "A security team wants a service that automatically discovers and scans workloads and code repositories for software vulnerabilities and unintended network exposure. Which service fits best?",
+        options: [
+          "Amazon Inspector",
+          "Amazon Macie",
+          "Amazon GuardDuty",
+          "AWS Security Hub"
+        ],
+        answer: 0,
+        explanation: "Amazon Inspector is AWS's vulnerability management service for workloads and code repositories. Macie is for sensitive data discovery, and GuardDuty is threat detection."
+      },
+      {
+        domain: "Security Operations",
+        prompt: "An analyst needs a service that helps explain suspicious findings by analyzing relationships and activity patterns during an investigation. Which service is the best fit?",
+        options: [
+          "Amazon Detective",
+          "AWS Security Hub",
+          "Amazon GuardDuty",
+          "Amazon CloudWatch"
+        ],
+        answer: 0,
+        explanation: "Amazon Detective is used for investigation and visualization of security data relationships. Security Hub centralizes findings instead of performing the investigation analysis itself."
+      },
+      {
+        domain: "Security Operations",
+        prompt: "An organization wants one place to aggregate, prioritize, and help respond to findings from AWS security services and partner tools. Which service should it use?",
+        options: [
+          "AWS Security Hub",
+          "Amazon Detective",
+          "AWS Trusted Advisor",
+          "AWS Artifact"
+        ],
+        answer: 0,
+        explanation: "AWS Security Hub centralizes and correlates findings from AWS and partner tools. Detective and Trusted Advisor serve different purposes."
+      },
+      {
+        domain: "Security Operations",
+        prompt: "Which service is designed to discover sensitive data such as PII in Amazon S3 and highlight related data security risks?",
+        options: [
+          "Amazon Macie",
+          "Amazon Inspector",
+          "AWS Secrets Manager",
+          "AWS Key Management Service (AWS KMS)"
+        ],
+        answer: 0,
+        explanation: "Amazon Macie is the data security service for discovering sensitive data in S3. It is not a key management or vulnerability scanning tool."
+      },
+      {
+        domain: "Security Operations",
+        prompt: "A platform team wants to store database passwords, API keys, and similar secrets securely and rotate them automatically when possible. Which AWS service is built for that?",
+        options: [
+          "AWS Certificate Manager (ACM)",
+          "AWS Key Management Service (AWS KMS)",
+          "AWS Secrets Manager",
+          "AWS CloudHSM"
+        ],
+        answer: 2,
+        explanation: "AWS Secrets Manager is built to store, manage, and rotate secrets. ACM handles certificates, and KMS manages encryption keys."
+      },
+      {
+        domain: "Security Operations",
+        prompt: "For most AWS workloads, which service is the default choice to create and control encryption keys used by AWS services and applications?",
+        options: [
+          "AWS CloudHSM",
+          "AWS Certificate Manager (ACM)",
+          "AWS Key Management Service (AWS KMS)",
+          "AWS Artifact"
+        ],
+        answer: 2,
+        explanation: "AWS KMS is the managed service for creating and controlling encryption keys for common AWS encryption use cases. CloudHSM is for dedicated HSM control requirements."
+      },
+      {
+        domain: "Security Operations",
+        prompt: "A company needs managed public SSL/TLS certificates for services such as Elastic Load Balancing and Amazon CloudFront. Which AWS service fits that need?",
+        options: [
+          "AWS Certificate Manager (ACM)",
+          "AWS Secrets Manager",
+          "AWS CloudHSM",
+          "Amazon Cognito"
+        ],
+        answer: 0,
+        explanation: "ACM provisions and manages public and private SSL/TLS certificates. It is for certificates, not for general secret storage or HSM management."
+      },
+      {
+        domain: "Governance and Administration",
+        prompt: "A company wants to group AWS accounts, apply organization-wide policies, and use consolidated billing, but it does not need a landing-zone setup service. Which service is the best fit?",
+        options: [
+          "AWS Organizations",
+          "AWS Control Tower",
+          "AWS Management Console",
+          "AWS Service Catalog"
+        ],
+        answer: 0,
+        explanation: "AWS Organizations is the foundation for multi-account management and consolidated billing. Control Tower builds on that to establish and govern a landing zone."
+      },
+      {
+        domain: "Governance and Administration",
+        prompt: "A startup wants a governed multi-account landing zone with preconfigured controls and AWS best-practice guardrails. Which service should it start with?",
+        options: [
+          "AWS Organizations",
+          "AWS License Manager",
+          "AWS Control Tower",
+          "AWS Resource Access Manager (AWS RAM)"
+        ],
+        answer: 2,
+        explanation: "AWS Control Tower is the landing-zone service that establishes and governs a multi-account AWS environment using preconfigured controls."
+      },
+      {
+        domain: "Networking and Security",
+        prompt: "A company wants to cache website assets close to global users at edge locations to reduce latency and improve content delivery performance. Which service is the best fit?",
+        options: [
+          "AWS Global Accelerator",
+          "Amazon CloudFront",
+          "Amazon Route 53",
+          "AWS PrivateLink"
+        ],
+        answer: 1,
+        explanation: "Amazon CloudFront is AWS's CDN for caching content at edge locations. Global Accelerator accelerates traffic at the network layer and is not itself a content cache."
+      },
+      {
+        domain: "Monitoring, Audit, and Configuration",
+        prompt: "Which service primarily records AWS API activity and account events for audit history?",
+        options: [
+          "AWS Config",
+          "Amazon CloudWatch",
+          "AWS CloudTrail",
+          "AWS Health Dashboard"
+        ],
+        answer: 2,
+        explanation: "AWS CloudTrail records AWS API and account activity. AWS Config focuses on resource configurations and compliance."
+      },
+      {
+        domain: "Monitoring, Audit, and Configuration",
+        prompt: "Which service is used to track resource configuration history, changes over time, and compliance against rules?",
+        options: [
+          "AWS CloudTrail",
+          "AWS Config",
+          "Amazon EventBridge",
+          "Amazon Inspector"
+        ],
+        answer: 1,
+        explanation: "AWS Config tracks AWS resource configurations, their changes, and compliance state. CloudTrail records API events rather than configuration state."
+      },
+      {
+        domain: "Operations and Automation",
+        prompt: "An operations team wants patching, automation runbooks, fleet visibility, and secure node access from one service. Which AWS service best matches this need?",
+        options: [
+          "AWS Systems Manager",
+          "AWS CodeBuild",
+          "Service Quotas",
+          "AWS Step Functions"
+        ],
+        answer: 0,
+        explanation: "AWS Systems Manager provides patching, automation, secure access, and fleet management capabilities across nodes at scale."
+      },
+      {
+        domain: "Networking and Content Delivery",
+        prompt: "A global gaming company needs static IP addresses and network-layer routing that sends users to the nearest healthy regional endpoint for better performance and fast failover. Which service is the best fit?",
+        options: [
+          "Amazon CloudFront",
+          "Amazon Route 53",
+          "AWS Global Accelerator",
+          "Amazon API Gateway"
+        ],
+        answer: 2,
+        explanation: "AWS Global Accelerator provides static IPs and network-layer traffic acceleration to healthy endpoints. CloudFront is a CDN, and Route 53 is DNS."
+      },
+      {
+        domain: "Optimization and Best Practices",
+        prompt: "Which service gives automated best-practice recommendations across areas such as cost optimization, security, resilience, performance, and service limits?",
+        options: [
+          "AWS Trusted Advisor",
+          "AWS Compute Optimizer",
+          "AWS Well-Architected Tool",
+          "AWS Budgets"
+        ],
+        answer: 0,
+        explanation: "AWS Trusted Advisor provides automated best-practice checks and recommendations. Compute Optimizer focuses on rightsizing, and the Well-Architected Tool supports guided workload reviews."
+      },
+      {
+        domain: "Optimization and Best Practices",
+        prompt: "A solutions architect wants to review a workload against the six Well-Architected pillars using guided questions and milestone tracking. Which service should be used?",
+        options: [
+          "AWS Compute Optimizer",
+          "AWS Well-Architected Tool",
+          "AWS Trusted Advisor",
+          "Amazon CloudWatch"
+        ],
+        answer: 1,
+        explanation: "The AWS Well-Architected Tool is purpose-built for guided workload reviews against the Well-Architected pillars."
+      },
+      {
+        domain: "Cloud Financial Management",
+        prompt: "A finance team needs the raw, detailed billing dataset delivered to Amazon S3 so it can run custom chargeback analysis with Amazon Athena. Which AWS billing feature should it use?",
+        options: [
+          "AWS Cost Explorer",
+          "AWS Budgets",
+          "AWS Cost and Usage Reports (CUR)",
+          "AWS Marketplace"
+        ],
+        answer: 2,
+        explanation: "CUR is the detailed underlying cost and usage dataset exported to S3 for custom analysis. Cost Explorer is better for built-in visual analysis and forecasting."
+      },
+      {
+        domain: "Cloud Financial Management",
+        prompt: "A product owner wants alerts when monthly cost or usage is forecasted to exceed a target. Which service is the best fit?",
+        options: [
+          "AWS Budgets",
+          "AWS Cost and Usage Reports (CUR)",
+          "AWS Organizations",
+          "AWS Pricing Calculator"
+        ],
+        answer: 0,
+        explanation: "AWS Budgets is used to set thresholds and receive alerts for planned spend or usage. CUR is raw data, not the alerting tool."
+      },
+      {
+        domain: "Storage",
+        prompt: "A team stores large amounts of data in Amazon S3 and cannot predict which objects will become hot or cold over time. It wants AWS to move data between tiers automatically. Which storage class fits best?",
+        options: [
+          "Amazon S3 Standard",
+          "Amazon S3 Intelligent-Tiering",
+          "Amazon S3 Glacier Deep Archive",
+          "Amazon S3 One Zone-IA"
+        ],
+        answer: 1,
+        explanation: "S3 Intelligent-Tiering is designed for unknown or changing access patterns and automatically optimizes tier placement."
+      },
+      {
+        domain: "Storage",
+        prompt: "Compliance archives must be retained at the lowest S3 storage cost and are expected to be accessed very rarely. Which storage class is the best fit?",
+        options: [
+          "Amazon S3 Glacier Deep Archive",
+          "Amazon S3 Glacier Instant Retrieval",
+          "Amazon S3 Standard-IA",
+          "Amazon S3 Express One Zone"
+        ],
+        answer: 0,
+        explanation: "S3 Glacier Deep Archive is the lowest-cost long-term archive class for data that is very rarely accessed."
+      },
+      {
+        domain: "Storage",
+        prompt: "An analytics application needs the highest-performance Amazon S3 storage class and accepts that the data will reside in a single Availability Zone. Which class should it use?",
+        options: [
+          "Amazon S3 Standard",
+          "Amazon S3 Glacier Instant Retrieval",
+          "Amazon S3 Express One Zone",
+          "Amazon S3 Intelligent-Tiering"
+        ],
+        answer: 2,
+        explanation: "S3 Express One Zone is the high-performance S3 storage class in a single AZ. That single-AZ design is the key tradeoff."
+      },
+      {
+        domain: "Storage",
+        prompt: "A new Amazon S3 bucket uses Object Ownership set to Bucket owner enforced. Which statement is true?",
+        options: [
+          "ACLs remain the primary access-control mechanism",
+          "The uploader owns each object by default even across accounts",
+          "ACLs are disabled and the bucket owner owns all objects",
+          "Public access is required for cross-account uploads"
+        ],
+        answer: 2,
+        explanation: "With Bucket owner enforced, ACLs are disabled and the bucket owner owns all objects. Bucket policies are the modern primary access-control method."
+      },
+      {
+        domain: "Storage",
+        prompt: "Which Amazon S3 protection feature is commonly used to help prevent accidental public exposure of buckets and objects?",
+        options: [
+          "S3 Lifecycle",
+          "Block Public Access",
+          "S3 Versioning",
+          "S3 Requester Pays"
+        ],
+        answer: 1,
+        explanation: "Block Public Access is the common guardrail against accidental public exposure in S3."
+      },
+      {
+        domain: "Storage",
+        prompt: "A Linux application running on multiple EC2 instances needs elastic shared file storage that can be mounted concurrently by many instances. Which AWS service is the best fit?",
+        options: [
+          "Amazon Elastic Block Store (Amazon EBS)",
+          "Amazon Elastic File System (Amazon EFS)",
+          "Amazon S3",
+          "Amazon Aurora"
+        ],
+        answer: 1,
+        explanation: "Amazon EFS provides elastic shared file storage for Linux workloads. EBS is block storage for individual EC2 attachments, while S3 is object storage."
+      },
+      {
+        domain: "Storage",
+        prompt: "Which service is designed for low-cost disaster recovery to AWS with ongoing replication and recovery of servers, rather than simply storing backups?",
+        options: [
+          "AWS Backup",
+          "AWS Elastic Disaster Recovery",
+          "AWS Storage Gateway",
+          "AWS Snow Family"
+        ],
+        answer: 1,
+        explanation: "AWS Elastic Disaster Recovery is the DR service for replicating and recovering servers into AWS. AWS Backup focuses on centralized backup management."
+      },
+      {
+        domain: "Storage",
+        prompt: "A company wants a hybrid storage service that connects its on-premises environment with AWS storage services. Which service should it use?",
+        options: [
+          "AWS Storage Gateway",
+          "AWS Backup",
+          "AWS DataSync",
+          "Amazon EFS"
+        ],
+        answer: 0,
+        explanation: "AWS Storage Gateway bridges on-premises environments and AWS storage for hybrid use cases."
+      },
+      {
+        domain: "Compute and Pricing",
+        prompt: "A workload is short-lived, unpredictable, and does not justify a long-term commitment. Which Amazon EC2 purchasing option is the best fit?",
+        options: [
+          "Spot Instances",
+          "Savings Plans",
+          "On-Demand Instances",
+          "Reserved Instances"
+        ],
+        answer: 2,
+        explanation: "On-Demand is the best default for unpredictable workloads with no commitment. Spot is cheaper but interruptible."
+      },
+      {
+        domain: "Compute and Pricing",
+        prompt: "A company can commit to a steady spend per hour for one or three years and wants more flexibility than locking itself to one exact EC2 instance configuration. Which pricing model fits best?",
+        options: [
+          "Dedicated Hosts",
+          "Savings Plans",
+          "Capacity Reservations",
+          "Spot Instances"
+        ],
+        answer: 1,
+        explanation: "Savings Plans trade a spend commitment for discounts while keeping more flexibility than a specific Reserved Instance configuration."
+      },
+      {
+        domain: "Compute and Pricing",
+        prompt: "A fault-tolerant batch process can stop and resume later if capacity is reclaimed. Which Amazon EC2 pricing option usually offers the largest discount?",
+        options: [
+          "On-Demand Instances",
+          "Capacity Reservations",
+          "Spot Instances",
+          "Dedicated Instances"
+        ],
+        answer: 2,
+        explanation: "Spot Instances use spare capacity and can be interrupted, which is why they are suited to fault-tolerant interruptible workloads."
+      },
+      {
+        domain: "Compute and Pricing",
+        prompt: "A software license requires the customer to use an entire physical server dedicated to that customer. Which Amazon EC2 option best matches that need?",
+        options: [
+          "Capacity Reservations",
+          "Dedicated Hosts",
+          "Dedicated Instances",
+          "Reserved Instances"
+        ],
+        answer: 1,
+        explanation: "Dedicated Hosts provide an entire physical server for the customer, which is useful for license and compliance requirements tied to physical hosts."
+      },
+      {
+        domain: "Compute and Pricing",
+        prompt: "A retailer needs to guarantee Amazon EC2 capacity in one specific Availability Zone for a launch event. Its primary goal is capacity assurance, not a pricing discount. What should it use?",
+        options: [
+          "Savings Plans",
+          "Reserved Instances",
+          "Capacity Reservations",
+          "Spot Instances"
+        ],
+        answer: 2,
+        explanation: "Capacity Reservations reserve EC2 capacity in a specific AZ. Their purpose is capacity assurance, not simply long-term discounting."
+      },
+      {
+        domain: "Compute",
+        prompt: "Which compute service is the best fit for code that runs in response to events without managing servers or clusters?",
+        options: [
+          "AWS Lambda",
+          "AWS Elastic Beanstalk",
+          "Amazon ECS",
+          "Amazon EC2 Auto Scaling"
+        ],
+        answer: 0,
+        explanation: "AWS Lambda is the serverless compute service for event-driven code. Elastic Beanstalk is a managed platform, not pure serverless code execution."
+      },
+      {
+        domain: "Compute",
+        prompt: "A team wants a managed platform to deploy a traditional web application quickly while AWS handles more of the underlying platform and scaling setup. Which service fits best?",
+        options: [
+          "AWS Elastic Beanstalk",
+          "AWS Lambda",
+          "Amazon Lightsail",
+          "AWS Batch"
+        ],
+        answer: 0,
+        explanation: "Elastic Beanstalk is the managed platform service for deploying traditional web apps and APIs without managing the underlying infrastructure directly."
+      },
+      {
+        domain: "Compute",
+        prompt: "Which service extends AWS infrastructure, services, and operating models into the customer's own data center for hybrid workloads?",
+        options: [
+          "AWS Direct Connect",
+          "AWS Outposts",
+          "AWS Snow Family",
+          "Amazon WorkSpaces"
+        ],
+        answer: 1,
+        explanation: "AWS Outposts brings AWS infrastructure on premises for hybrid use cases such as low latency to local systems or data residency needs."
+      },
+      {
+        domain: "Containers",
+        prompt: "A platform team wants AWS-native orchestration for containers and does not need Kubernetes APIs. Which service is the best fit?",
+        options: [
+          "Amazon Elastic Kubernetes Service (Amazon EKS)",
+          "Amazon Elastic Container Service (Amazon ECS)",
+          "AWS Fargate",
+          "Amazon Elastic Container Registry (Amazon ECR)"
+        ],
+        answer: 1,
+        explanation: "Amazon ECS is AWS-native container orchestration. EKS is the managed Kubernetes option."
+      },
+      {
+        domain: "Containers",
+        prompt: "A team requires Kubernetes-compatible tooling and wants AWS to manage the control plane. Which service should it choose?",
+        options: [
+          "Amazon Elastic Kubernetes Service (Amazon EKS)",
+          "Amazon Elastic Container Service (Amazon ECS)",
+          "AWS Batch",
+          "AWS Step Functions"
+        ],
+        answer: 0,
+        explanation: "Amazon EKS is the managed Kubernetes service. ECS is container orchestration too, but not Kubernetes."
+      },
+      {
+        domain: "Containers",
+        prompt: "Which service lets containers run on Amazon ECS or Amazon EKS without managing EC2 worker nodes?",
+        options: [
+          "Amazon Elastic Container Registry (Amazon ECR)",
+          "AWS Fargate",
+          "AWS Lambda",
+          "Amazon EC2 Auto Scaling"
+        ],
+        answer: 1,
+        explanation: "AWS Fargate is the serverless compute engine for containers on ECS and EKS. ECR is the registry, not the runtime."
+      },
+      {
+        domain: "Networking and Content Delivery",
+        prompt: "A company needs authoritative DNS, domain registration, and traffic routing policies for its public application. Which AWS service fits best?",
+        options: [
+          "Amazon Route 53",
+          "Amazon CloudFront",
+          "AWS Global Accelerator",
+          "AWS Transit Gateway"
+        ],
+        answer: 0,
+        explanation: "Amazon Route 53 is AWS's DNS and domain service. CloudFront is a CDN, and Global Accelerator works at the network layer."
+      },
+      {
+        domain: "Analytics",
+        prompt: "Analysts want to run SQL queries directly on data in Amazon S3 without managing servers or first loading the data into a warehouse. Which service is the best fit?",
+        options: [
+          "Amazon Redshift",
+          "Amazon Athena",
+          "Amazon EMR",
+          "AWS Glue"
+        ],
+        answer: 1,
+        explanation: "Amazon Athena is the serverless SQL query service for data in S3 and other sources. Redshift is a warehouse rather than query-in-place service."
+      },
+      {
+        domain: "Analytics",
+        prompt: "A company wants a cloud data warehouse for analytics on curated data and reporting workloads. Which service should it use?",
+        options: [
+          "Amazon Athena",
+          "Amazon QuickSight",
+          "Amazon Redshift",
+          "Amazon OpenSearch Service"
+        ],
+        answer: 2,
+        explanation: "Amazon Redshift is the cloud data warehouse service for analytics on curated data. QuickSight is the BI layer, not the warehouse."
+      },
+      {
+        domain: "Analytics",
+        prompt: "Which service is serverless data integration and ETL, and also provides a data catalog?",
+        options: [
+          "AWS Glue",
+          "Amazon EMR",
+          "AWS Database Migration Service (AWS DMS)",
+          "Amazon Kinesis"
+        ],
+        answer: 0,
+        explanation: "AWS Glue is the serverless data integration and ETL service with data catalog capabilities."
+      },
+      {
+        domain: "Analytics",
+        prompt: "A data engineering team wants to run open-source big-data frameworks such as Spark, Hadoop, Trino, Flink, and Hive with more processing flexibility. Which AWS service is the best fit?",
+        options: [
+          "Amazon EMR",
+          "Amazon Athena",
+          "Amazon Redshift",
+          "Amazon QuickSight"
+        ],
+        answer: 0,
+        explanation: "Amazon EMR is the managed big-data platform for open-source frameworks. Athena and Redshift serve different analytics patterns."
+      },
+      {
+        domain: "Analytics",
+        prompt: "Executives want interactive business dashboards and visual analytics without managing the BI platform infrastructure. Which service should they use?",
+        options: [
+          "Amazon QuickSight",
+          "Amazon Athena",
+          "Amazon OpenSearch Service",
+          "Amazon Kinesis"
+        ],
+        answer: 0,
+        explanation: "Amazon QuickSight is the serverless business intelligence service for dashboards and visual analytics."
+      },
+      {
+        domain: "Analytics",
+        prompt: "An operations team wants managed search, log analytics, and observability rather than warehouse-style reporting. Which service best fits that need?",
+        options: [
+          "Amazon OpenSearch Service",
+          "Amazon Redshift",
+          "Amazon QuickSight",
+          "AWS Glue"
+        ],
+        answer: 0,
+        explanation: "Amazon OpenSearch Service is the managed search, log analytics, and observability service. Redshift is for warehouse analytics, not search and log analysis."
+      },
+      {
+        domain: "Application Integration",
+        prompt: "Which service is the best fit for a serverless event bus that connects AWS services, custom applications, and SaaS sources?",
+        options: [
+          "Amazon EventBridge",
+          "Amazon Simple Queue Service (Amazon SQS)",
+          "Amazon Simple Notification Service (Amazon SNS)",
+          "AWS Step Functions"
+        ],
+        answer: 0,
+        explanation: "Amazon EventBridge is the serverless event bus for application integration. SQS is a queue, SNS is pub/sub, and Step Functions is workflow orchestration."
+      },
+      {
+        domain: "Application Integration",
+        prompt: "An application must publish the same message to multiple subscribers such as email endpoints, AWS Lambda, and Amazon SQS queues. Which service fits best?",
+        options: [
+          "Amazon Simple Notification Service (Amazon SNS)",
+          "Amazon EventBridge",
+          "Amazon Simple Queue Service (Amazon SQS)",
+          "AWS Step Functions"
+        ],
+        answer: 0,
+        explanation: "Amazon SNS is the pub/sub fanout service. SQS is for queued decoupling rather than direct fanout to multiple subscribers."
+      },
+      {
+        domain: "Application Integration",
+        prompt: "A microservices architecture wants durable message buffering so producers and consumers can scale independently and process messages asynchronously. Which service is the best fit?",
+        options: [
+          "Amazon EventBridge",
+          "Amazon Simple Notification Service (Amazon SNS)",
+          "Amazon Simple Queue Service (Amazon SQS)",
+          "AWS AppSync"
+        ],
+        answer: 2,
+        explanation: "Amazon SQS is the managed queue service used to decouple components and buffer work."
+      },
+      {
+        domain: "Application Integration",
+        prompt: "Which service is best for modeling an order-processing workflow with retries, branching, state transitions, and visual orchestration?",
+        options: [
+          "AWS Step Functions",
+          "Amazon SQS",
+          "Amazon SNS",
+          "Amazon EventBridge"
+        ],
+        answer: 0,
+        explanation: "AWS Step Functions is the workflow orchestration service for distributed applications."
+      },
+      {
+        domain: "Analytics and Streaming",
+        prompt: "A platform ingests real-time clickstream and telemetry data that must be processed as it arrives. Which service is the best fit?",
+        options: [
+          "Amazon Kinesis",
+          "Amazon SQS",
+          "AWS Glue",
+          "Amazon QuickSight"
+        ],
+        answer: 0,
+        explanation: "Amazon Kinesis is built for real-time streaming data collection, processing, and analysis."
+      },
+      {
+        domain: "Frontend and APIs",
+        prompt: "A team needs to create, publish, and secure REST, HTTP, and WebSocket APIs for external consumers. Which AWS service fits best?",
+        options: [
+          "AWS AppSync",
+          "Amazon API Gateway",
+          "Amazon EventBridge",
+          "Amazon Route 53"
+        ],
+        answer: 1,
+        explanation: "Amazon API Gateway is the managed service for REST, HTTP, and WebSocket APIs. AppSync is for managed GraphQL APIs."
+      },
+      {
+        domain: "Frontend and APIs",
+        prompt: "A mobile and web application needs a managed GraphQL API with real-time data synchronization capabilities. Which AWS service is the best fit?",
+        options: [
+          "Amazon API Gateway",
+          "AWS Amplify",
+          "AWS AppSync",
+          "Amazon Cognito"
+        ],
+        answer: 2,
+        explanation: "AWS AppSync is the managed GraphQL service with real-time sync features. API Gateway is not the GraphQL-focused service here."
+      },
+      {
+        domain: "Database",
+        prompt: "Which database service is designed as a high-performance MySQL- and PostgreSQL-compatible relational database?",
+        options: [
+          "Amazon Aurora",
+          "Amazon RDS",
+          "Amazon DynamoDB",
+          "Amazon DocumentDB"
+        ],
+        answer: 0,
+        explanation: "Amazon Aurora is the high-performance relational database compatible with MySQL and PostgreSQL. Amazon RDS is the broader managed relational database service across engines."
+      },
+      {
+        domain: "Database",
+        prompt: "An application needs a serverless NoSQL database for key-value and document access patterns with very low latency. Which AWS service fits best?",
+        options: [
+          "Amazon Neptune",
+          "Amazon ElastiCache",
+          "Amazon DynamoDB",
+          "Amazon Aurora"
+        ],
+        answer: 2,
+        explanation: "Amazon DynamoDB is the serverless NoSQL key-value and document database. Neptune is for graph data, and ElastiCache is a cache."
+      },
+      {
+        domain: "Networking and Hybrid Connectivity",
+        prompt: "A company wants a dedicated private network connection from its data center to AWS for more consistent bandwidth and lower-latency private connectivity. Which service is the best fit?",
+        options: [
+          "AWS Site-to-Site VPN",
+          "AWS Direct Connect",
+          "AWS Client VPN",
+          "AWS PrivateLink"
+        ],
+        answer: 1,
+        explanation: "AWS Direct Connect is the dedicated private connection from a customer site to AWS. Site-to-Site VPN uses encrypted tunnels over the internet instead."
+      },
+      {
+        domain: "Networking and Hybrid Connectivity",
+        prompt: "A SaaS provider wants customers to access its service privately from their VPCs without traversing the public internet and without building full mesh routing across networks. Which service is the best fit?",
+        options: [
+          "AWS Transit Gateway",
+          "AWS PrivateLink",
+          "Amazon Route 53",
+          "AWS Direct Connect"
+        ],
+        answer: 1,
+        explanation: "AWS PrivateLink provides private connectivity to services and SaaS offerings without using the public internet. Transit Gateway is for hub-and-spoke network routing."
+      },
+      {
+        domain: "Migration and Transfer",
+        prompt: "A database modernization project is moving to a different database engine. Which tool converts the schema and much of the SQL code, while AWS Database Migration Service usually handles the data movement?",
+        options: [
+          "AWS Application Migration Service",
+          "AWS Schema Conversion Tool (AWS SCT)",
+          "AWS Migration Hub",
+          "Migration Evaluator"
+        ],
+        answer: 1,
+        explanation: "AWS SCT handles schema and code conversion. AWS DMS is typically used to move or continuously replicate the database data."
+      },
+      {
+        domain: "Migration and Modernization",
+        prompt: "A company wants some cloud benefits and limited optimizations during migration, but it does not want to redesign the application's core architecture. Which of the 7 Rs best describes this approach?",
+        options: [
+          "Refactor",
+          "Rehost",
+          "Replatform",
+          "Repurchase"
+        ],
+        answer: 2,
+        explanation: "Replatform means making limited optimizations without fundamentally changing the application's core architecture. Rehost is closer to a straight lift and shift, and refactor is the full redesign path."
+      }
+    ];
+
+    if (questionBank.length !== 65) {
+      throw new Error(`Expected 65 questions, found ${questionBank.length}.`);
+    }
+
+    const introPanel = document.getElementById("intro-panel");
+    const examPanel = document.getElementById("exam-panel");
+    const resultsPanel = document.getElementById("results-panel");
+    const startBtn = document.getElementById("start-btn");
+    const restartBtn = document.getElementById("restart-btn");
+    const restartFullBtn = document.getElementById("restart-full-btn");
+    const retryMissedBtn = document.getElementById("retry-missed-btn");
+    const nextBtn = document.getElementById("next-btn");
+
+    const panelTitle = document.getElementById("panel-title");
+    const domainChip = document.getElementById("domain-chip");
+    const scoreInline = document.getElementById("score-inline");
+    const progressLabel = document.getElementById("progress-label");
+    const answeredLabel = document.getElementById("answered-label");
+    const progressFill = document.getElementById("progress-fill");
+    const questionNumber = document.getElementById("question-number");
+    const questionText = document.getElementById("question-text");
+    const optionsContainer = document.getElementById("options");
+    const feedbackSlot = document.getElementById("feedback-slot");
+    const hintText = document.getElementById("hint-text");
+
+    const resultsSummary = document.getElementById("results-summary");
+    const summaryList = document.getElementById("summary-list");
+    const domainBreakdown = document.getElementById("domain-breakdown");
+    const reviewList = document.getElementById("review-list");
+    const scorePercent = document.getElementById("score-percent");
+    const scoreRing = document.getElementById("score-ring");
+
+    const optionLetters = ["A", "B", "C", "D"];
+    let state = createState(questionBank.slice(), false);
+
+    function createState(questions, isRetryMode) {
+      return {
+        questions,
+        answers: new Array(questions.length).fill(null),
+        currentIndex: 0,
+        score: 0,
+        startedAt: null,
+        finishedAt: null,
+        isRetryMode
+      };
+    }
+
+    function startExam(questions, isRetryMode) {
+      state = createState(questions.slice(), isRetryMode);
+      state.startedAt = Date.now();
+
+      introPanel.hidden = true;
+      resultsPanel.hidden = true;
+      examPanel.hidden = false;
+
+      panelTitle.textContent = isRetryMode ? "Retry Missed Questions" : "Practice Exam";
+      renderQuestion();
+    }
+
+    function answeredCount() {
+      return state.answers.filter(Boolean).length;
+    }
+
+    function currentQuestion() {
+      return state.questions[state.currentIndex];
+    }
+
+    function renderQuestion() {
+      const question = currentQuestion();
+      const answerRecord = state.answers[state.currentIndex];
+      const total = state.questions.length;
+      const answered = answeredCount();
+      const questionIndex = state.currentIndex + 1;
+      const progress = (answered / total) * 100;
+
+      domainChip.textContent = question.domain;
+      questionNumber.textContent = `Question ${questionIndex}`;
+      questionText.textContent = question.prompt;
+      progressLabel.textContent = `Question ${questionIndex} of ${total}`;
+      answeredLabel.textContent = `Answered ${answered} of ${total}`;
+      progressFill.style.width = `${progress}%`;
+      scoreInline.textContent = `Score: ${state.score} / ${answered}`;
+      hintText.textContent = answerRecord
+        ? (questionIndex === total ? "Press Enter to view results." : "Press Enter to move to the next question.")
+        : "Tip: use keys 1-4 to answer, then Enter for next.";
+
+      optionsContainer.innerHTML = "";
+      feedbackSlot.innerHTML = "";
+
+      question.options.forEach((option, optionIndex) => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "option-btn";
+
+        if (answerRecord) {
+          button.disabled = true;
+
+          if (optionIndex === question.answer) {
+            button.classList.add("correct");
+          } else if (optionIndex === answerRecord.selectedIndex) {
+            button.classList.add("incorrect");
+          }
+        }
+
+        button.innerHTML = `
+          <span class="option-index">${optionLetters[optionIndex]}</span>
+          <span class="option-text">${option}</span>
+        `;
+        button.addEventListener("click", () => handleAnswer(optionIndex));
+        optionsContainer.appendChild(button);
+      });
+
+      if (answerRecord) {
+        const feedback = document.createElement("div");
+        const correctText = question.options[question.answer];
+        const selectedText = question.options[answerRecord.selectedIndex];
+        feedback.className = `feedback ${answerRecord.isCorrect ? "correct" : "incorrect"}`;
+        feedback.innerHTML = answerRecord.isCorrect
+          ? `<strong>Correct.</strong><div>${question.explanation}</div>`
+          : `<strong>Incorrect.</strong><div><strong>Your answer:</strong> ${selectedText}</div><div><strong>Correct answer:</strong> ${correctText}</div><div>${question.explanation}</div>`;
+        feedbackSlot.appendChild(feedback);
+      }
+
+      nextBtn.disabled = !answerRecord;
+      nextBtn.textContent = questionIndex === total ? "View Results" : "Next Question";
+    }
+
+    function handleAnswer(selectedIndex) {
+      if (state.answers[state.currentIndex]) {
+        return;
+      }
+
+      const question = currentQuestion();
+      const isCorrect = selectedIndex === question.answer;
+      state.answers[state.currentIndex] = { selectedIndex, isCorrect };
+
+      if (isCorrect) {
+        state.score += 1;
+      }
+
+      renderQuestion();
+    }
+
+    function goNext() {
+      if (!state.answers[state.currentIndex]) {
+        return;
+      }
+
+      if (state.currentIndex === state.questions.length - 1) {
+        showResults();
+        return;
+      }
+
+      state.currentIndex += 1;
+      renderQuestion();
+    }
+
+    function showResults() {
+      state.finishedAt = Date.now();
+
+      examPanel.hidden = true;
+      resultsPanel.hidden = false;
+
+      const total = state.questions.length;
+      const correct = state.score;
+      const incorrect = total - correct;
+      const percent = Math.round((correct / total) * 100);
+      const durationMs = Math.max(0, state.finishedAt - state.startedAt);
+      const durationMinutes = Math.floor(durationMs / 60000);
+      const durationSeconds = Math.floor((durationMs % 60000) / 1000).toString().padStart(2, "0");
+
+      resultsSummary.textContent = `${state.isRetryMode ? "Retry session" : "Full exam"} complete. You answered ${correct} out of ${total} correctly in ${durationMinutes}:${durationSeconds}.`;
+      scorePercent.textContent = `${percent}%`;
+      scoreRing.style.background = `conic-gradient(var(--accent) ${percent * 3.6}deg, var(--accent-warm) ${percent * 3.6}deg, rgba(22, 35, 39, 0.08) 0deg)`;
+
+      summaryList.innerHTML = "";
+      addSummaryLine("Correct", String(correct));
+      addSummaryLine("Incorrect", String(incorrect));
+      addSummaryLine("Accuracy", `${percent}%`);
+      addSummaryLine("Exam size", `${total} questions`);
+
+      renderDomainBreakdown();
+      renderReview();
+
+      const missedCount = state.answers.filter((answer) => answer && !answer.isCorrect).length;
+      retryMissedBtn.hidden = missedCount === 0;
+    }
+
+    function addSummaryLine(label, value) {
+      const row = document.createElement("div");
+      row.className = "summary-line";
+      row.innerHTML = `<span>${label}</span><strong>${value}</strong>`;
+      summaryList.appendChild(row);
+    }
+
+    function renderDomainBreakdown() {
+      const stats = new Map();
+
+      state.questions.forEach((question, index) => {
+        const existing = stats.get(question.domain) || { total: 0, correct: 0 };
+        existing.total += 1;
+
+        if (state.answers[index] && state.answers[index].isCorrect) {
+          existing.correct += 1;
+        }
+
+        stats.set(question.domain, existing);
+      });
+
+      const ranked = Array.from(stats.entries())
+        .map(([domain, values]) => ({
+          domain,
+          total: values.total,
+          correct: values.correct,
+          accuracy: Math.round((values.correct / values.total) * 100)
+        }))
+        .sort((left, right) => left.accuracy - right.accuracy || left.domain.localeCompare(right.domain));
+
+      domainBreakdown.innerHTML = "";
+
+      ranked.slice(0, 6).forEach((entry) => {
+        const row = document.createElement("div");
+        row.className = "summary-line";
+        row.innerHTML = `<span>${entry.domain}</span><strong>${entry.correct}/${entry.total} (${entry.accuracy}%)</strong>`;
+        domainBreakdown.appendChild(row);
+      });
+    }
+
+    function renderReview() {
+      reviewList.innerHTML = "";
+
+      const missed = state.questions
+        .map((question, index) => ({ question, answer: state.answers[index], index }))
+        .filter((item) => item.answer && !item.answer.isCorrect);
+
+      if (!missed.length) {
+        const empty = document.createElement("div");
+        empty.className = "empty-state";
+        empty.textContent = "No missed questions in this run.";
+        reviewList.appendChild(empty);
+        return;
+      }
+
+      missed.forEach((item) => {
+        const review = document.createElement("article");
+        review.className = "review-item";
+        review.innerHTML = `
+          <h3>Question ${item.index + 1}: ${item.question.prompt}</h3>
+          <p><span class="label">Domain</span>${item.question.domain}</p>
+          <p><span class="label">Your answer</span>${item.question.options[item.answer.selectedIndex]}</p>
+          <p><span class="label">Correct answer</span>${item.question.options[item.question.answer]}</p>
+          <p><span class="label">Why</span>${item.question.explanation}</p>
+        `;
+        reviewList.appendChild(review);
+      });
+    }
+
+    function restartFullExam() {
+      startExam(questionBank.slice(), false);
+    }
+
+    function retryMissedQuestions() {
+      const missedQuestions = state.questions.filter((question, index) => {
+        const answer = state.answers[index];
+        return answer && !answer.isCorrect;
+      });
+
+      if (!missedQuestions.length) {
+        return;
+      }
+
+      startExam(missedQuestions, true);
+    }
+
+    startBtn.addEventListener("click", restartFullExam);
+    restartBtn.addEventListener("click", restartFullExam);
+    restartFullBtn.addEventListener("click", restartFullExam);
+    retryMissedBtn.addEventListener("click", retryMissedQuestions);
+    nextBtn.addEventListener("click", goNext);
+
+    window.addEventListener("keydown", (event) => {
+      if (examPanel.hidden) {
+        return;
+      }
+
+      if (["1", "2", "3", "4"].includes(event.key) && !state.answers[state.currentIndex]) {
+        handleAnswer(Number(event.key) - 1);
+        return;
+      }
+
+      if (event.key === "Enter" && state.answers[state.currentIndex]) {
+        goNext();
+      }
+    });
+  </script>
+</body>
+</html>
