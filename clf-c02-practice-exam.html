@@ -399,6 +399,18 @@
       color: #fff8f7;
     }
 
+    .option-btn.selected {
+      background: rgba(15, 122, 122, 0.08);
+      border-color: rgba(15, 122, 122, 0.24);
+      box-shadow: 0 10px 22px rgba(15, 122, 122, 0.1);
+    }
+
+    .option-btn.selected .option-index {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #f6fffd;
+    }
+
     .feedback {
       border-radius: 20px;
       padding: 18px;
@@ -582,8 +594,9 @@
         <div>
           <h1>Hard Practice Exam</h1>
           <p>
-            Standalone local HTML exam with 65 single-best-answer questions, immediate validation on selection,
-            scenario-heavy wording, and end-of-exam review. Built from the repository study notes checked on 2026-05-19.
+            Standalone local HTML exam with 65 single-best-answer questions, selectable practice or true exam modes,
+            scenario-heavy wording, hidden domains until answer lock-in, shuffled answer choices, and end-of-exam review.
+            Built from the repository study notes checked on 2026-05-19.
           </p>
         </div>
         <div class="hero-stats" aria-label="Exam overview">
@@ -597,7 +610,7 @@
           </div>
           <div class="stat-card">
             <span class="stat-label">Validation</span>
-            <span class="stat-value">Instant</span>
+            <span class="stat-value">2 Modes</span>
           </div>
           <div class="stat-card">
             <span class="stat-label">Format</span>
@@ -612,19 +625,20 @@
       <div class="intro-grid">
         <article class="feature-card">
           <h3>One Question At A Time</h3>
-          <p>Only the current question is shown. Select one option to lock your answer and reveal feedback.</p>
+          <p>Only the current question is shown. Select one option to lock your answer, then move forward after the answer is recorded.</p>
         </article>
         <article class="feature-card">
-          <h3>Immediate Validation</h3>
-          <p>Each selection is graded instantly, with the correct answer and a short explanation shown right away.</p>
+          <h3>Two Modes</h3>
+          <p>Practice mode reveals feedback instantly. True exam mode hides correctness, score, and explanations until the end.</p>
         </article>
         <article class="feature-card">
           <h3>Harder Than Basic Flashcards</h3>
-          <p>Most questions are scenario-driven and use nearby AWS services as distractors instead of obvious mismatches.</p>
+          <p>Questions stay scenario-driven, the domain stays hidden until you answer, and answer choices are reshuffled each run.</p>
         </article>
       </div>
       <div class="actions">
-        <button class="btn btn-primary" id="start-btn" type="button">Start Exam</button>
+        <button class="btn btn-primary" id="start-practice-btn" type="button">Start Practice Mode</button>
+        <button class="btn btn-secondary" id="start-exam-btn" type="button">Start True Exam Mode</button>
       </div>
     </section>
 
@@ -634,8 +648,8 @@
           <h2 id="panel-title">Question</h2>
           <div class="meta">
             <span class="chip" id="domain-chip">Domain</span>
+            <span class="chip" id="mode-chip">Mode</span>
             <span class="chip">Single best answer</span>
-            <span class="chip">Hard mode</span>
           </div>
         </div>
         <div class="muted" id="score-inline" aria-live="polite">Score: 0 / 0</div>
@@ -696,27 +710,27 @@
     const questionBank = [
       {
         domain: "Identity and Access",
-        prompt: "A company already has a workforce identity provider and wants employees to sign in once to multiple AWS accounts and AWS applications. It does not need consumer sign-up features. Which service is the best fit?",
+        prompt: "A company uses an external workforce identity source and wants centralized access assignments across multiple AWS accounts and AWS-managed applications. Which AWS service should anchor that design?",
         options: [
           "AWS Identity and Access Management (IAM)",
           "AWS IAM Identity Center",
           "Amazon Cognito",
-          "AWS Directory Service"
+          "AWS Organizations"
         ],
         answer: 1,
-        explanation: "IAM Identity Center is AWS's recommended service for workforce SSO and centralized multi-account access. Amazon Cognito is aimed at customer or application end users rather than employee access across AWS accounts."
+        explanation: "AWS IAM Identity Center is the workforce access service for SSO and centralized multi-account assignments. Amazon Cognito is primarily for application end users rather than employee access across AWS accounts."
       },
       {
         domain: "Identity and Access",
-        prompt: "A retail mobile app needs end-user sign-up, sign-in, and access tokens for customers using the app. Which AWS service fits this requirement best?",
+        prompt: "A consumer retail app needs customer registration, sign-in, and support for social identity providers without building a custom user directory. Which service is the best fit?",
         options: [
           "Amazon Cognito",
           "AWS IAM Identity Center",
-          "AWS Resource Access Manager (AWS RAM)",
-          "AWS Organizations"
+          "AWS Directory Service",
+          "AWS Identity and Access Management (IAM)"
         ],
         answer: 0,
-        explanation: "Amazon Cognito is the customer identity service for application users. IAM Identity Center focuses on workforce access to AWS accounts and applications."
+        explanation: "Amazon Cognito is designed for customer identity in applications, including sign-up, sign-in, and federation with social identity providers. IAM Identity Center is for workforce access."
       },
       {
         domain: "Identity and Access",
@@ -780,15 +794,15 @@
       },
       {
         domain: "Security Operations",
-        prompt: "Which service continuously monitors AWS accounts, workloads, and data for malicious activity and produces intelligent threat findings?",
+        prompt: "A security team wants managed threat detection that analyzes signals such as AWS activity, network telemetry, and DNS behavior to surface suspicious findings without deploying its own detection engine. Which service fits best?",
         options: [
           "Amazon Inspector",
           "Amazon GuardDuty",
           "Amazon Detective",
-          "AWS Audit Manager"
+          "AWS Security Hub"
         ],
         answer: 1,
-        explanation: "Amazon GuardDuty is the threat detection service. Inspector focuses on vulnerabilities, and Detective helps investigate findings."
+        explanation: "Amazon GuardDuty is AWS's threat detection service. Amazon Inspector focuses on vulnerability management, and AWS Security Hub aggregates findings rather than generating this type of threat detection signal."
       },
       {
         domain: "Security Operations",
@@ -816,19 +830,19 @@
       },
       {
         domain: "Security Operations",
-        prompt: "An organization wants one place to aggregate, prioritize, and help respond to findings from AWS security services and partner tools. Which service should it use?",
+        prompt: "A security team wants a central place to normalize findings from GuardDuty, Inspector, Macie, and partner products, then prioritize them against security standards. Which service best fits?",
         options: [
           "AWS Security Hub",
           "Amazon Detective",
-          "AWS Trusted Advisor",
-          "AWS Artifact"
+          "Amazon GuardDuty",
+          "Amazon Macie"
         ],
         answer: 0,
-        explanation: "AWS Security Hub centralizes and correlates findings from AWS and partner tools. Detective and Trusted Advisor serve different purposes."
+        explanation: "AWS Security Hub aggregates and prioritizes findings across AWS security services and partner tools. GuardDuty and Macie generate domain-specific findings but are not the central aggregation layer."
       },
       {
         domain: "Security Operations",
-        prompt: "Which service is designed to discover sensitive data such as PII in Amazon S3 and highlight related data security risks?",
+        prompt: "A data protection team wants to automatically scan Amazon S3 buckets for sensitive data such as PII and receive findings about data exposure risks. Which service is the best fit?",
         options: [
           "Amazon Macie",
           "Amazon Inspector",
@@ -852,43 +866,43 @@
       },
       {
         domain: "Security Operations",
-        prompt: "For most AWS workloads, which service is the default choice to create and control encryption keys used by AWS services and applications?",
+        prompt: "An application team needs the standard managed AWS service for customer managed encryption keys used across services such as Amazon S3, Amazon EBS, and custom application encryption. Which service is the default choice?",
         options: [
           "AWS CloudHSM",
-          "AWS Certificate Manager (ACM)",
+          "AWS Secrets Manager",
           "AWS Key Management Service (AWS KMS)",
-          "AWS Artifact"
+          "AWS Certificate Manager (ACM)"
         ],
         answer: 2,
-        explanation: "AWS KMS is the managed service for creating and controlling encryption keys for common AWS encryption use cases. CloudHSM is for dedicated HSM control requirements."
+        explanation: "AWS KMS is the managed service for creating and controlling encryption keys for common AWS encryption use cases. AWS CloudHSM is for dedicated HSM control requirements, and AWS Secrets Manager stores secrets rather than acting as the primary key-management service."
       },
       {
         domain: "Security Operations",
-        prompt: "A company needs managed public SSL/TLS certificates for services such as Elastic Load Balancing and Amazon CloudFront. Which AWS service fits that need?",
+        prompt: "A company needs AWS to provision and renew public SSL/TLS certificates that can be attached directly to services such as Elastic Load Balancing and Amazon CloudFront. Which service is the best fit?",
         options: [
           "AWS Certificate Manager (ACM)",
           "AWS Secrets Manager",
-          "AWS CloudHSM",
-          "Amazon Cognito"
+          "AWS Private Certificate Authority",
+          "AWS Key Management Service (AWS KMS)"
         ],
         answer: 0,
-        explanation: "ACM provisions and manages public and private SSL/TLS certificates. It is for certificates, not for general secret storage or HSM management."
+        explanation: "AWS Certificate Manager provisions and manages public certificates for integrated AWS services. AWS Private CA is for private certificate hierarchies, and AWS KMS does not issue SSL/TLS certificates."
       },
       {
         domain: "Governance and Administration",
-        prompt: "A company wants to group AWS accounts, apply organization-wide policies, and use consolidated billing, but it does not need a landing-zone setup service. Which service is the best fit?",
+        prompt: "A company wants the foundational service for grouping AWS accounts, applying service control policies, and using consolidated billing, but it does not need landing-zone orchestration. Which service is the best fit?",
         options: [
           "AWS Organizations",
           "AWS Control Tower",
-          "AWS Management Console",
-          "AWS Service Catalog"
+          "AWS IAM Identity Center",
+          "AWS Resource Access Manager (AWS RAM)"
         ],
         answer: 0,
         explanation: "AWS Organizations is the foundation for multi-account management and consolidated billing. Control Tower builds on that to establish and govern a landing zone."
       },
       {
         domain: "Governance and Administration",
-        prompt: "A startup wants a governed multi-account landing zone with preconfigured controls and AWS best-practice guardrails. Which service should it start with?",
+        prompt: "A startup wants AWS to set up a multi-account landing zone with guardrails, account factory workflows, and centralized governance instead of assembling those building blocks manually. Which service should it start with?",
         options: [
           "AWS Organizations",
           "AWS License Manager",
@@ -900,7 +914,7 @@
       },
       {
         domain: "Networking and Security",
-        prompt: "A company wants to cache website assets close to global users at edge locations to reduce latency and improve content delivery performance. Which service is the best fit?",
+        prompt: "A global media site wants static and dynamic content delivered from edge locations with caching close to viewers to reduce latency and offload the origin. Which service is the best fit?",
         options: [
           "AWS Global Accelerator",
           "Amazon CloudFront",
@@ -912,7 +926,7 @@
       },
       {
         domain: "Monitoring, Audit, and Configuration",
-        prompt: "Which service primarily records AWS API activity and account events for audit history?",
+        prompt: "During an audit, a compliance analyst needs to determine which IAM identity called an AWS API operation and when it happened. Which service should be queried first?",
         options: [
           "AWS Config",
           "Amazon CloudWatch",
@@ -924,7 +938,7 @@
       },
       {
         domain: "Monitoring, Audit, and Configuration",
-        prompt: "Which service is used to track resource configuration history, changes over time, and compliance against rules?",
+        prompt: "A governance team wants a timeline of how resource configurations changed over time and whether those resources drifted from required compliance rules. Which service fits that need?",
         options: [
           "AWS CloudTrail",
           "AWS Config",
@@ -936,11 +950,11 @@
       },
       {
         domain: "Operations and Automation",
-        prompt: "An operations team wants patching, automation runbooks, fleet visibility, and secure node access from one service. Which AWS service best matches this need?",
+        prompt: "An operations team wants patch compliance, automation documents, parameter storage, inventory, and browser-based administrative access for EC2 instances and hybrid nodes from one service. Which AWS service best matches this need?",
         options: [
           "AWS Systems Manager",
-          "AWS CodeBuild",
-          "Service Quotas",
+          "AWS OpsWorks",
+          "AWS CloudFormation",
           "AWS Step Functions"
         ],
         answer: 0,
@@ -960,7 +974,7 @@
       },
       {
         domain: "Optimization and Best Practices",
-        prompt: "Which service gives automated best-practice recommendations across areas such as cost optimization, security, resilience, performance, and service limits?",
+        prompt: "An operations lead wants AWS-generated checks that flag issues such as idle resources, security gaps, resilience risks, and approaching service quotas from one recommendation service. Which service fits best?",
         options: [
           "AWS Trusted Advisor",
           "AWS Compute Optimizer",
@@ -972,7 +986,7 @@
       },
       {
         domain: "Optimization and Best Practices",
-        prompt: "A solutions architect wants to review a workload against the six Well-Architected pillars using guided questions and milestone tracking. Which service should be used?",
+        prompt: "A solutions architect wants guided review questions, improvement tracking, and milestone history for a workload across the six Well-Architected pillars. Which service should be used?",
         options: [
           "AWS Compute Optimizer",
           "AWS Well-Architected Tool",
@@ -984,7 +998,7 @@
       },
       {
         domain: "Cloud Financial Management",
-        prompt: "A finance team needs the raw, detailed billing dataset delivered to Amazon S3 so it can run custom chargeback analysis with Amazon Athena. Which AWS billing feature should it use?",
+        prompt: "A finance engineering team wants line-item cost and usage data exported to Amazon S3 so it can run custom SQL analysis in Amazon Athena instead of relying only on built-in billing dashboards. Which AWS billing feature should it use?",
         options: [
           "AWS Cost Explorer",
           "AWS Budgets",
@@ -996,7 +1010,7 @@
       },
       {
         domain: "Cloud Financial Management",
-        prompt: "A product owner wants alerts when monthly cost or usage is forecasted to exceed a target. Which service is the best fit?",
+        prompt: "A product owner wants notifications when monthly spend or usage is forecasted to exceed a defined threshold before the month ends. Which service is the best fit?",
         options: [
           "AWS Budgets",
           "AWS Cost and Usage Reports (CUR)",
@@ -1008,7 +1022,7 @@
       },
       {
         domain: "Storage",
-        prompt: "A team stores large amounts of data in Amazon S3 and cannot predict which objects will become hot or cold over time. It wants AWS to move data between tiers automatically. Which storage class fits best?",
+        prompt: "A team stores a large data lake in Amazon S3 and cannot predict which objects will suddenly become hot or cold. It wants AWS to optimize tier placement automatically without the team managing frequent lifecycle changes. Which storage class fits best?",
         options: [
           "Amazon S3 Standard",
           "Amazon S3 Intelligent-Tiering",
@@ -1020,7 +1034,7 @@
       },
       {
         domain: "Storage",
-        prompt: "Compliance archives must be retained at the lowest S3 storage cost and are expected to be accessed very rarely. Which storage class is the best fit?",
+        prompt: "A compliance archive must be retained for years at the lowest S3 storage cost, and retrievals are expected to be rare and can tolerate long restore times. Which storage class is the best fit?",
         options: [
           "Amazon S3 Glacier Deep Archive",
           "Amazon S3 Glacier Instant Retrieval",
@@ -1032,7 +1046,7 @@
       },
       {
         domain: "Storage",
-        prompt: "An analytics application needs the highest-performance Amazon S3 storage class and accepts that the data will reside in a single Availability Zone. Which class should it use?",
+        prompt: "A latency-sensitive analytics application needs the highest-performance Amazon S3 option and accepts the tradeoff that objects will be stored in only one Availability Zone. Which class should it use?",
         options: [
           "Amazon S3 Standard",
           "Amazon S3 Glacier Instant Retrieval",
@@ -1044,7 +1058,7 @@
       },
       {
         domain: "Storage",
-        prompt: "A new Amazon S3 bucket uses Object Ownership set to Bucket owner enforced. Which statement is true?",
+        prompt: "A bucket receives cross-account uploads, and the owner configures Object Ownership as Bucket owner enforced to simplify access control. Which statement is true?",
         options: [
           "ACLs remain the primary access-control mechanism",
           "The uploader owns each object by default even across accounts",
@@ -1056,43 +1070,43 @@
       },
       {
         domain: "Storage",
-        prompt: "Which Amazon S3 protection feature is commonly used to help prevent accidental public exposure of buckets and objects?",
+        prompt: "An S3 administrator wants an account-level and bucket-level guardrail that can block public exposure even if a bucket policy or ACL is misconfigured later. Which feature should be applied?",
         options: [
-          "S3 Lifecycle",
           "Block Public Access",
           "S3 Versioning",
-          "S3 Requester Pays"
+          "S3 Object Lock",
+          "S3 Access Points"
         ],
-        answer: 1,
-        explanation: "Block Public Access is the common guardrail against accidental public exposure in S3."
+        answer: 0,
+        explanation: "S3 Block Public Access acts as a guardrail against accidental public exposure caused by permissive bucket policies or ACLs. Versioning and Object Lock solve different problems."
       },
       {
         domain: "Storage",
-        prompt: "A Linux application running on multiple EC2 instances needs elastic shared file storage that can be mounted concurrently by many instances. Which AWS service is the best fit?",
+        prompt: "A Linux workload spans multiple EC2 instances across Availability Zones and needs POSIX-style shared storage that can be mounted concurrently and grow automatically. Which service is the best fit?",
         options: [
           "Amazon Elastic Block Store (Amazon EBS)",
           "Amazon Elastic File System (Amazon EFS)",
-          "Amazon S3",
-          "Amazon Aurora"
+          "Amazon FSx for Windows File Server",
+          "Amazon FSx for Lustre"
         ],
         answer: 1,
-        explanation: "Amazon EFS provides elastic shared file storage for Linux workloads. EBS is block storage for individual EC2 attachments, while S3 is object storage."
+        explanation: "Amazon EFS provides elastic shared file storage for Linux workloads. EBS is block storage, and the FSx choices target different file-system use cases."
       },
       {
         domain: "Storage",
-        prompt: "Which service is designed for low-cost disaster recovery to AWS with ongoing replication and recovery of servers, rather than simply storing backups?",
+        prompt: "A company wants continuous replication of source servers into AWS so it can recover them during a disaster with low recovery point objectives, rather than just keeping backup copies. Which service best matches that goal?",
         options: [
-          "AWS Backup",
           "AWS Elastic Disaster Recovery",
+          "AWS Backup",
+          "AWS Application Migration Service",
           "AWS Storage Gateway",
-          "AWS Snow Family"
         ],
-        answer: 1,
-        explanation: "AWS Elastic Disaster Recovery is the DR service for replicating and recovering servers into AWS. AWS Backup focuses on centralized backup management."
+        answer: 0,
+        explanation: "AWS Elastic Disaster Recovery is built for continuous replication and recovery of servers into AWS. AWS Backup manages backups, but it is not the primary service for low-RPO server replication."
       },
       {
         domain: "Storage",
-        prompt: "A company wants a hybrid storage service that connects its on-premises environment with AWS storage services. Which service should it use?",
+        prompt: "A company wants on-premises applications to keep using familiar local storage interfaces while data is backed by AWS storage services for a hybrid deployment. Which service should it use?",
         options: [
           "AWS Storage Gateway",
           "AWS Backup",
@@ -1164,31 +1178,31 @@
       },
       {
         domain: "Compute",
-        prompt: "Which compute service is the best fit for code that runs in response to events without managing servers or clusters?",
+        prompt: "A workload consists of short functions triggered by object uploads, queue messages, and scheduled events. The team does not want to provision or patch compute capacity. Which service is the best fit?",
         options: [
           "AWS Lambda",
-          "AWS Elastic Beanstalk",
+          "AWS Fargate",
           "Amazon ECS",
-          "Amazon EC2 Auto Scaling"
+          "AWS Elastic Beanstalk"
         ],
         answer: 0,
-        explanation: "AWS Lambda is the serverless compute service for event-driven code. Elastic Beanstalk is a managed platform, not pure serverless code execution."
+        explanation: "AWS Lambda is the serverless compute service for event-driven code. The other options still require container, platform, or cluster management decisions."
       },
       {
         domain: "Compute",
-        prompt: "A team wants a managed platform to deploy a traditional web application quickly while AWS handles more of the underlying platform and scaling setup. Which service fits best?",
+        prompt: "A team wants to deploy a conventional web application quickly using familiar application platforms while AWS handles provisioning, load balancing, scaling, and health monitoring. Which service fits best?",
         options: [
           "AWS Elastic Beanstalk",
+          "AWS App Runner",
           "AWS Lambda",
-          "Amazon Lightsail",
-          "AWS Batch"
+          "Amazon ECS"
         ],
         answer: 0,
         explanation: "Elastic Beanstalk is the managed platform service for deploying traditional web apps and APIs without managing the underlying infrastructure directly."
       },
       {
         domain: "Compute",
-        prompt: "Which service extends AWS infrastructure, services, and operating models into the customer's own data center for hybrid workloads?",
+        prompt: "A manufacturer needs AWS-managed infrastructure installed on premises because workloads must stay close to local systems while using consistent AWS APIs and tools. Which service fits best?",
         options: [
           "AWS Direct Connect",
           "AWS Outposts",
@@ -1200,7 +1214,7 @@
       },
       {
         domain: "Containers",
-        prompt: "A platform team wants AWS-native orchestration for containers and does not need Kubernetes APIs. Which service is the best fit?",
+        prompt: "A platform team wants container orchestration with AWS-native constructs and integrations, but it does not need Kubernetes APIs or tooling compatibility. Which service is the best fit?",
         options: [
           "Amazon Elastic Kubernetes Service (Amazon EKS)",
           "Amazon Elastic Container Service (Amazon ECS)",
@@ -1212,7 +1226,7 @@
       },
       {
         domain: "Containers",
-        prompt: "A team requires Kubernetes-compatible tooling and wants AWS to manage the control plane. Which service should it choose?",
+        prompt: "A team standardizes on Kubernetes manifests, controllers, and ecosystem tooling and wants AWS to operate the control plane for it. Which service should it choose?",
         options: [
           "Amazon Elastic Kubernetes Service (Amazon EKS)",
           "Amazon Elastic Container Service (Amazon ECS)",
@@ -1224,7 +1238,7 @@
       },
       {
         domain: "Containers",
-        prompt: "Which service lets containers run on Amazon ECS or Amazon EKS without managing EC2 worker nodes?",
+        prompt: "A team wants to run containers on Amazon ECS and Amazon EKS without selecting instance types, patching worker nodes, or scaling EC2 capacity itself. Which service fits best?",
         options: [
           "Amazon Elastic Container Registry (Amazon ECR)",
           "AWS Fargate",
@@ -1236,7 +1250,7 @@
       },
       {
         domain: "Networking and Content Delivery",
-        prompt: "A company needs authoritative DNS, domain registration, and traffic routing policies for its public application. Which AWS service fits best?",
+        prompt: "A public application needs authoritative DNS, domain registration, and advanced routing policies such as latency-based or failover routing. Which AWS service fits best?",
         options: [
           "Amazon Route 53",
           "Amazon CloudFront",
@@ -1248,7 +1262,7 @@
       },
       {
         domain: "Analytics",
-        prompt: "Analysts want to run SQL queries directly on data in Amazon S3 without managing servers or first loading the data into a warehouse. Which service is the best fit?",
+        prompt: "Analysts want ad hoc SQL over log data already stored in Amazon S3, without provisioning clusters or loading the data into a separate warehouse first. Which service is the best fit?",
         options: [
           "Amazon Redshift",
           "Amazon Athena",
@@ -1260,7 +1274,7 @@
       },
       {
         domain: "Analytics",
-        prompt: "A company wants a cloud data warehouse for analytics on curated data and reporting workloads. Which service should it use?",
+        prompt: "A BI team wants a managed cloud data warehouse optimized for analytics and reporting on curated datasets rather than query-in-place over raw files. Which service should it use?",
         options: [
           "Amazon Athena",
           "Amazon QuickSight",
@@ -1272,7 +1286,7 @@
       },
       {
         domain: "Analytics",
-        prompt: "Which service is serverless data integration and ETL, and also provides a data catalog?",
+        prompt: "A data team needs managed ETL jobs plus a central metadata catalog that other AWS analytics services can use to discover datasets. Which service fits best?",
         options: [
           "AWS Glue",
           "Amazon EMR",
@@ -1284,7 +1298,7 @@
       },
       {
         domain: "Analytics",
-        prompt: "A data engineering team wants to run open-source big-data frameworks such as Spark, Hadoop, Trino, Flink, and Hive with more processing flexibility. Which AWS service is the best fit?",
+        prompt: "A data engineering team wants managed clusters for Spark, Hadoop, Trino, Flink, and Hive because it needs open-source big-data processing flexibility beyond a warehouse-only model. Which AWS service is the best fit?",
         options: [
           "Amazon EMR",
           "Amazon Athena",
@@ -1296,7 +1310,7 @@
       },
       {
         domain: "Analytics",
-        prompt: "Executives want interactive business dashboards and visual analytics without managing the BI platform infrastructure. Which service should they use?",
+        prompt: "Business leaders want browser-based dashboards and shared visual analytics over cloud data sources without operating their own BI servers. Which service should they use?",
         options: [
           "Amazon QuickSight",
           "Amazon Athena",
@@ -1308,7 +1322,7 @@
       },
       {
         domain: "Analytics",
-        prompt: "An operations team wants managed search, log analytics, and observability rather than warehouse-style reporting. Which service best fits that need?",
+        prompt: "An operations team needs indexed log search, dashboards, and observability analysis rather than relational warehouse reporting. Which service best fits that need?",
         options: [
           "Amazon OpenSearch Service",
           "Amazon Redshift",
@@ -1320,7 +1334,7 @@
       },
       {
         domain: "Application Integration",
-        prompt: "Which service is the best fit for a serverless event bus that connects AWS services, custom applications, and SaaS sources?",
+        prompt: "A team wants a serverless event router that can ingest events from AWS services, custom applications, and SaaS products, then route them to multiple targets by rule. Which service is the best fit?",
         options: [
           "Amazon EventBridge",
           "Amazon Simple Queue Service (Amazon SQS)",
@@ -1332,7 +1346,7 @@
       },
       {
         domain: "Application Integration",
-        prompt: "An application must publish the same message to multiple subscribers such as email endpoints, AWS Lambda, and Amazon SQS queues. Which service fits best?",
+        prompt: "An event must fan out immediately to multiple downstream targets, including email recipients, AWS Lambda functions, and Amazon SQS queues. Which service fits best?",
         options: [
           "Amazon Simple Notification Service (Amazon SNS)",
           "Amazon EventBridge",
@@ -1344,7 +1358,7 @@
       },
       {
         domain: "Application Integration",
-        prompt: "A microservices architecture wants durable message buffering so producers and consumers can scale independently and process messages asynchronously. Which service is the best fit?",
+        prompt: "A microservices architecture needs durable buffering so producers can continue sending work even when consumers are slow or temporarily unavailable. Which service is the best fit?",
         options: [
           "Amazon EventBridge",
           "Amazon Simple Notification Service (Amazon SNS)",
@@ -1356,7 +1370,7 @@
       },
       {
         domain: "Application Integration",
-        prompt: "Which service is best for modeling an order-processing workflow with retries, branching, state transitions, and visual orchestration?",
+        prompt: "An order-processing system spans multiple AWS services and needs retries, waits, branching, error handling, and a visible workflow state machine. Which service is the best fit?",
         options: [
           "AWS Step Functions",
           "Amazon SQS",
@@ -1368,7 +1382,7 @@
       },
       {
         domain: "Analytics and Streaming",
-        prompt: "A platform ingests real-time clickstream and telemetry data that must be processed as it arrives. Which service is the best fit?",
+        prompt: "A platform ingests clickstream and telemetry records continuously and needs to process the stream as the records arrive instead of waiting for batch loads. Which service is the best fit?",
         options: [
           "Amazon Kinesis",
           "Amazon SQS",
@@ -1380,7 +1394,7 @@
       },
       {
         domain: "Frontend and APIs",
-        prompt: "A team needs to create, publish, and secure REST, HTTP, and WebSocket APIs for external consumers. Which AWS service fits best?",
+        prompt: "A team needs a managed front door for REST, HTTP, and WebSocket APIs with publishing, throttling, and security features for external consumers. Which AWS service fits best?",
         options: [
           "AWS AppSync",
           "Amazon API Gateway",
@@ -1392,7 +1406,7 @@
       },
       {
         domain: "Frontend and APIs",
-        prompt: "A mobile and web application needs a managed GraphQL API with real-time data synchronization capabilities. Which AWS service is the best fit?",
+        prompt: "A mobile and web application needs a managed GraphQL API plus real-time synchronization capabilities for connected clients. Which AWS service is the best fit?",
         options: [
           "Amazon API Gateway",
           "AWS Amplify",
@@ -1404,7 +1418,7 @@
       },
       {
         domain: "Database",
-        prompt: "Which database service is designed as a high-performance MySQL- and PostgreSQL-compatible relational database?",
+        prompt: "A team wants a managed relational database that remains compatible with MySQL or PostgreSQL but is positioned for higher performance and availability than standard community deployments. Which service fits best?",
         options: [
           "Amazon Aurora",
           "Amazon RDS",
@@ -1416,7 +1430,7 @@
       },
       {
         domain: "Database",
-        prompt: "An application needs a serverless NoSQL database for key-value and document access patterns with very low latency. Which AWS service fits best?",
+        prompt: "A gaming backend needs a serverless database for key-value and document access patterns with consistently low latency at large scale. Which AWS service fits best?",
         options: [
           "Amazon Neptune",
           "Amazon ElastiCache",
@@ -1428,7 +1442,7 @@
       },
       {
         domain: "Networking and Hybrid Connectivity",
-        prompt: "A company wants a dedicated private network connection from its data center to AWS for more consistent bandwidth and lower-latency private connectivity. Which service is the best fit?",
+        prompt: "A data center needs more consistent private network bandwidth to AWS than internet-based VPN can provide, using a dedicated connection into AWS. Which service is the best fit?",
         options: [
           "AWS Site-to-Site VPN",
           "AWS Direct Connect",
@@ -1440,7 +1454,7 @@
       },
       {
         domain: "Networking and Hybrid Connectivity",
-        prompt: "A SaaS provider wants customers to access its service privately from their VPCs without traversing the public internet and without building full mesh routing across networks. Which service is the best fit?",
+        prompt: "A SaaS provider wants customers to consume its service privately from their VPCs without public endpoints and without creating full network peering or transit routing between environments. Which service is the best fit?",
         options: [
           "AWS Transit Gateway",
           "AWS PrivateLink",
@@ -1452,7 +1466,7 @@
       },
       {
         domain: "Migration and Transfer",
-        prompt: "A database modernization project is moving to a different database engine. Which tool converts the schema and much of the SQL code, while AWS Database Migration Service usually handles the data movement?",
+        prompt: "A migration from one database engine to another needs schema and SQL code conversion before the data replication step handled by AWS Database Migration Service. Which tool should be used for the conversion work?",
         options: [
           "AWS Application Migration Service",
           "AWS Schema Conversion Tool (AWS SCT)",
@@ -1464,7 +1478,7 @@
       },
       {
         domain: "Migration and Modernization",
-        prompt: "A company wants some cloud benefits and limited optimizations during migration, but it does not want to redesign the application's core architecture. Which of the 7 Rs best describes this approach?",
+        prompt: "A migration plan keeps the application's core architecture intact but makes limited optimizations, such as moving to managed services or changing the runtime platform for some cloud benefits. Which of the 7 Rs best describes this approach?",
         options: [
           "Refactor",
           "Rehost",
@@ -1483,7 +1497,8 @@
     const introPanel = document.getElementById("intro-panel");
     const examPanel = document.getElementById("exam-panel");
     const resultsPanel = document.getElementById("results-panel");
-    const startBtn = document.getElementById("start-btn");
+    const startPracticeBtn = document.getElementById("start-practice-btn");
+    const startExamBtn = document.getElementById("start-exam-btn");
     const restartBtn = document.getElementById("restart-btn");
     const restartFullBtn = document.getElementById("restart-full-btn");
     const retryMissedBtn = document.getElementById("retry-missed-btn");
@@ -1491,6 +1506,7 @@
 
     const panelTitle = document.getElementById("panel-title");
     const domainChip = document.getElementById("domain-chip");
+    const modeChip = document.getElementById("mode-chip");
     const scoreInline = document.getElementById("score-inline");
     const progressLabel = document.getElementById("progress-label");
     const answeredLabel = document.getElementById("answered-label");
@@ -1509,7 +1525,14 @@
     const scoreRing = document.getElementById("score-ring");
 
     const optionLetters = ["A", "B", "C", "D"];
-    let state = createState(questionBank.slice(), false);
+    const MODE_PRACTICE = "practice";
+    const MODE_EXAM = "exam";
+    let lastSelectedMode = MODE_PRACTICE;
+    let state = createState(questionBank.slice(), { isRetryMode: false, mode: MODE_PRACTICE });
+
+    function modeLabel(mode) {
+      return mode === MODE_EXAM ? "True exam mode" : "Practice mode";
+    }
 
     function shuffleQuestions(questions) {
       const shuffled = questions.slice();
@@ -1524,7 +1547,28 @@
       return shuffled;
     }
 
-    function createState(questions, isRetryMode) {
+    function shuffleOptions(question) {
+      const shuffledOptions = question.options.map((option, index) => ({ option, index }));
+
+      for (let currentIndex = shuffledOptions.length - 1; currentIndex > 0; currentIndex -= 1) {
+        const randomIndex = Math.floor(Math.random() * (currentIndex + 1));
+        const current = shuffledOptions[currentIndex];
+        shuffledOptions[currentIndex] = shuffledOptions[randomIndex];
+        shuffledOptions[randomIndex] = current;
+      }
+
+      return {
+        ...question,
+        options: shuffledOptions.map((entry) => entry.option),
+        answer: shuffledOptions.findIndex((entry) => entry.index === question.answer)
+      };
+    }
+
+    function prepareQuestions(questions) {
+      return shuffleQuestions(questions.map((question) => shuffleOptions(question)));
+    }
+
+    function createState(questions, { isRetryMode, mode }) {
       return {
         questions,
         answers: new Array(questions.length).fill(null),
@@ -1532,19 +1576,22 @@
         score: 0,
         startedAt: null,
         finishedAt: null,
-        isRetryMode
+        isRetryMode,
+        mode,
+        immediateFeedback: mode === MODE_PRACTICE
       };
     }
 
-    function startExam(questions, isRetryMode) {
-      state = createState(shuffleQuestions(questions), isRetryMode);
+    function startExam(questions, { isRetryMode = false, mode = lastSelectedMode } = {}) {
+      lastSelectedMode = mode;
+      state = createState(prepareQuestions(questions), { isRetryMode, mode });
       state.startedAt = Date.now();
 
       introPanel.hidden = true;
       resultsPanel.hidden = true;
       examPanel.hidden = false;
 
-      panelTitle.textContent = isRetryMode ? "Retry Missed Questions" : "Practice Exam";
+      panelTitle.textContent = isRetryMode ? `Retry Missed Questions` : (mode === MODE_EXAM ? "True Exam" : "Practice Exam");
       renderQuestion();
     }
 
@@ -1559,21 +1606,33 @@
     function renderQuestion() {
       const question = currentQuestion();
       const answerRecord = state.answers[state.currentIndex];
+      const answerLocked = Boolean(answerRecord);
+      const revealFeedback = answerLocked && state.immediateFeedback;
       const total = state.questions.length;
       const answered = answeredCount();
       const questionIndex = state.currentIndex + 1;
       const progress = (answered / total) * 100;
 
-      domainChip.textContent = question.domain;
+      domainChip.textContent = revealFeedback ? question.domain : "Domain hidden";
+      modeChip.textContent = modeLabel(state.mode);
       questionNumber.textContent = `Question ${questionIndex}`;
       questionText.textContent = question.prompt;
       progressLabel.textContent = `Question ${questionIndex} of ${total}`;
       answeredLabel.textContent = `Answered ${answered} of ${total}`;
       progressFill.style.width = `${progress}%`;
-      scoreInline.textContent = `Score: ${state.score} / ${answered}`;
-      hintText.textContent = answerRecord
-        ? (questionIndex === total ? "Press Enter to view results." : "Press Enter to move to the next question.")
-        : "Tip: use keys 1-4 to answer, then Enter for next.";
+      scoreInline.textContent = state.immediateFeedback
+        ? `Score: ${state.score} / ${answered}`
+        : `Locked: ${answered} / ${total}`;
+
+      if (answerLocked) {
+        hintText.textContent = questionIndex === total
+          ? (state.immediateFeedback ? "Press Enter to view results." : "Answer locked. Press Enter to finish and reveal results.")
+          : (state.immediateFeedback ? "Press Enter to move to the next question." : "Answer locked. Press Enter for the next question.");
+      } else {
+        hintText.textContent = state.immediateFeedback
+          ? "Tip: use keys 1-4 to answer. The domain is revealed after you lock a choice."
+          : "Tip: use keys 1-4 to answer. Correctness, domain, and score stay hidden until the end.";
+      }
 
       optionsContainer.innerHTML = "";
       feedbackSlot.innerHTML = "";
@@ -1583,13 +1642,17 @@
         button.type = "button";
         button.className = "option-btn";
 
-        if (answerRecord) {
+        if (answerLocked) {
           button.disabled = true;
 
-          if (optionIndex === question.answer) {
-            button.classList.add("correct");
+          if (state.immediateFeedback) {
+            if (optionIndex === question.answer) {
+              button.classList.add("correct");
+            } else if (optionIndex === answerRecord.selectedIndex) {
+              button.classList.add("incorrect");
+            }
           } else if (optionIndex === answerRecord.selectedIndex) {
-            button.classList.add("incorrect");
+            button.classList.add("selected");
           }
         }
 
@@ -1601,7 +1664,7 @@
         optionsContainer.appendChild(button);
       });
 
-      if (answerRecord) {
+      if (revealFeedback) {
         const feedback = document.createElement("div");
         const correctText = question.options[question.answer];
         const selectedText = question.options[answerRecord.selectedIndex];
@@ -1612,7 +1675,7 @@
         feedbackSlot.appendChild(feedback);
       }
 
-      nextBtn.disabled = !answerRecord;
+      nextBtn.disabled = !answerLocked;
       nextBtn.textContent = questionIndex === total ? "View Results" : "Next Question";
     }
 
@@ -1660,11 +1723,14 @@
       const durationMinutes = Math.floor(durationMs / 60000);
       const durationSeconds = Math.floor((durationMs % 60000) / 1000).toString().padStart(2, "0");
 
-      resultsSummary.textContent = `${state.isRetryMode ? "Retry session" : "Full exam"} complete. You answered ${correct} out of ${total} correctly in ${durationMinutes}:${durationSeconds}.`;
+      const sessionLabel = state.isRetryMode ? "Retry session" : (state.mode === MODE_EXAM ? "True exam" : "Practice session");
+
+      resultsSummary.textContent = `${sessionLabel} complete. You answered ${correct} out of ${total} correctly in ${durationMinutes}:${durationSeconds}.`;
       scorePercent.textContent = `${percent}%`;
       scoreRing.style.background = `conic-gradient(var(--accent) ${percent * 3.6}deg, var(--accent-warm) ${percent * 3.6}deg, rgba(22, 35, 39, 0.08) 0deg)`;
 
       summaryList.innerHTML = "";
+      addSummaryLine("Mode", modeLabel(state.mode));
       addSummaryLine("Correct", String(correct));
       addSummaryLine("Incorrect", String(incorrect));
       addSummaryLine("Accuracy", `${percent}%`);
@@ -1675,6 +1741,7 @@
 
       const missedCount = state.answers.filter((answer) => answer && !answer.isCorrect).length;
       retryMissedBtn.hidden = missedCount === 0;
+      retryMissedBtn.textContent = state.mode === MODE_EXAM ? "Retry Missed In True Exam Mode" : "Retry Missed Questions";
     }
 
     function addSummaryLine(label, value) {
@@ -1747,7 +1814,7 @@
     }
 
     function restartFullExam() {
-      startExam(questionBank.slice(), false);
+      startExam(questionBank.slice(), { isRetryMode: false, mode: lastSelectedMode });
     }
 
     function retryMissedQuestions() {
@@ -1760,10 +1827,11 @@
         return;
       }
 
-      startExam(missedQuestions, true);
+      startExam(missedQuestions, { isRetryMode: true, mode: lastSelectedMode });
     }
 
-    startBtn.addEventListener("click", restartFullExam);
+    startPracticeBtn.addEventListener("click", () => startExam(questionBank.slice(), { isRetryMode: false, mode: MODE_PRACTICE }));
+    startExamBtn.addEventListener("click", () => startExam(questionBank.slice(), { isRetryMode: false, mode: MODE_EXAM }));
     restartBtn.addEventListener("click", restartFullExam);
     restartFullBtn.addEventListener("click", restartFullExam);
     retryMissedBtn.addEventListener("click", retryMissedQuestions);
