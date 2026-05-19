@@ -174,27 +174,51 @@ In short: AppStream 2.0 is for individual apps, WorkSpaces is for complete deskt
 
 ## Security, Identity, and Compliance
 
+### Compliance and Audit
+
 | Service | Very short description | How to tell it apart |
 | --- | --- | --- |
 | AWS Artifact | On-demand AWS compliance reports and agreements. | Read AWS compliance reports and accept agreements. |
 | AWS Audit Manager | Collect audit evidence continuously. | Automates evidence collection for audits and assessments. |
-| AWS Certificate Manager (ACM) | Provision and manage TLS certificates. | For SSL/TLS certificates, not keys or secrets. |
-| AWS CloudHSM | Dedicated hardware security modules. | Single-tenant HSM control when you manage the hardware-backed keys. |
-| Amazon Cognito | User sign-up, sign-in, and access control. | Customer app identity for end users and apps. |
-| Amazon Detective | Investigate security findings visually. | Investigates findings using log data from AWS resources. |
-| AWS Directory Service | Managed Microsoft AD and directory options. | Managed Active Directory for AD-dependent workloads. |
-| AWS Firewall Manager | Centrally manage firewall rules and protections. | Pushes WAF and firewall policies across accounts and resources. |
-| Amazon GuardDuty | Intelligent threat detection for AWS. | Detects threats and produces findings. |
+
+### Identity, Directory, and Access
+
+| Service | Very short description | How to tell it apart |
+| --- | --- | --- |
 | AWS Identity and Access Management (IAM) | Manage access with users, roles, and policies. | Core AWS permissions service for users, roles, and policies. |
 | AWS IAM Identity Center | Workforce access and single sign-on. | Workforce SSO and centralized multi-account access. |
-| Amazon Inspector | Automated vulnerability and exposure scanning. | Scans EC2, container images, Lambda, and code repositories. |
-| AWS Key Management Service (AWS KMS) | Create and control encryption keys. | Managed encryption keys and cryptographic operations. |
-| Amazon Macie | Discover and protect sensitive data in S3. | Focused on sensitive data discovery in S3. |
+| Amazon Cognito | User sign-up, sign-in, and access control. | Customer app identity for end users and apps. |
+| AWS Directory Service | Managed Microsoft AD and directory options. | Managed Active Directory for AD-dependent workloads. |
 | AWS Resource Access Manager (AWS RAM) | Share AWS resources across accounts. | Shares resources across AWS accounts. |
+
+### Data Protection and Key Management
+
+| Service | Very short description | How to tell it apart |
+| --- | --- | --- |
+| AWS Certificate Manager (ACM) | Provision and manage TLS certificates. | For SSL/TLS certificates, not keys or secrets. |
+| AWS Key Management Service (AWS KMS) | Create and control encryption keys. | Managed encryption keys and cryptographic operations. |
+| AWS CloudHSM | Dedicated hardware security modules. | Single-tenant HSM (Hardware Security Module) control when you manage the hardware-backed keys. The cryptographic operations happen inside specialized hardware rather than in normal application memory, which gives stronger security and helps with compliance requirements |
 | AWS Secrets Manager | Store and rotate secrets securely. | Stores and rotates passwords, API keys, and secrets. |
+| Amazon Macie | Discover and protect sensitive data in S3. | Sensitive-data discovery tool: uses ML and pattern matching to find data like PII in S3 and highlight data security risks. |
+
+### Detection and Investigation
+
+| Service | Very short description | How to tell it apart |
+| --- | --- | --- |
+| Amazon GuardDuty | Intelligent threat detection for AWS. | Detects threats and produces findings. |
+| Amazon Inspector | Automated vulnerability management and exposure scanning. | Vulnerability scanner: automatically discovers and scans EC2, container images, Lambda, and code repositories for software issues and network exposure. |
+| Amazon Detective | Analyze and visualize security data to investigate findings. | Investigation tool: uses log data, ML, and graph relationships from AWS resources to help explain who did what and when. |
 | AWS Security Hub | Centralize security findings and posture. | Aggregates signals from AWS and partner security tools. |
-| AWS Shield | Managed DDoS protection. | For DDoS protection, especially advanced mitigation. |
+
+Study shortcut: GuardDuty detects threats, Detective investigates them, Inspector finds vulnerabilities, and Macie finds sensitive data.
+
+### Network and Application Protection
+
+| Service | Very short description | How to tell it apart |
+| --- | --- | --- |
 | AWS WAF | Web application firewall for HTTP apps. | Blocks web exploits, bots, and bad HTTP requests. |
+| AWS Shield | Managed DDoS protection. | For DDoS protection, especially advanced mitigation. |
+| AWS Firewall Manager | Centrally manage firewall rules and protections. | Pushes WAF and firewall policies across accounts and resources. |
 
 ## Serverless
 
