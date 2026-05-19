@@ -1511,6 +1511,19 @@
     const optionLetters = ["A", "B", "C", "D"];
     let state = createState(questionBank.slice(), false);
 
+    function shuffleQuestions(questions) {
+      const shuffled = questions.slice();
+
+      for (let index = shuffled.length - 1; index > 0; index -= 1) {
+        const randomIndex = Math.floor(Math.random() * (index + 1));
+        const current = shuffled[index];
+        shuffled[index] = shuffled[randomIndex];
+        shuffled[randomIndex] = current;
+      }
+
+      return shuffled;
+    }
+
     function createState(questions, isRetryMode) {
       return {
         questions,
@@ -1524,7 +1537,7 @@
     }
 
     function startExam(questions, isRetryMode) {
-      state = createState(questions.slice(), isRetryMode);
+      state = createState(shuffleQuestions(questions), isRetryMode);
       state.startedAt = Date.now();
 
       introPanel.hidden = true;
