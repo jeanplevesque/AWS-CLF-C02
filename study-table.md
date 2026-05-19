@@ -173,15 +173,19 @@ Study shortcut: Organizations manages accounts, Control Tower sets up and govern
 
 ## Migration and Transfer
 
-| Service | Short description |
-| --- | --- |
-| AWS Application Discovery Service | Discover on-premises servers and dependencies. |
-| AWS Application Migration Service | Lift-and-shift server migration to AWS. |
-| AWS Database Migration Service (AWS DMS) | Migrate databases with minimal downtime. |
-| Migration Evaluator | Estimate migration costs and business case. |
-| AWS Migration Hub | Track migrations across AWS tools. |
-| AWS Schema Conversion Tool (AWS SCT) | Convert database schemas for migration. |
-| AWS Snow Family | Edge devices for offline compute and data transfer. |
+| Service | Short description | How to tell it apart |
+| --- | --- | --- |
+| AWS Application Discovery Service | Collect inventory, utilization, and dependency data from on-premises servers and databases to help assess and plan migrations. | Discovery tool: helps you understand what you have before migrating. It does not actually move servers or database data. |
+| AWS Application Migration Service | Highly automated lift-and-shift service that replicates and moves physical, virtual, or cloud servers into AWS with minimal changes. | Server rehost tool: use it when you want to move whole servers and applications to AWS quickly, usually into Amazon EC2. |
+| AWS Database Migration Service (AWS DMS) | Migrate and continuously replicate database data with minimal downtime, including homogeneous and heterogeneous database migrations. | Database move tool: use it to move the data itself. Pair it with AWS SCT when database schema or code must be converted. |
+| Migration Evaluator | Builds a data-driven migration business case by analyzing on-premises inventory, utilization, licensing, and projected AWS costs. | Cost-assessment tool: use it before migration to estimate savings, target sizing, and the financial case. It does not perform the migration. |
+| AWS Migration Hub | Central place to discover servers, group them into applications, and track migration progress across multiple AWS migration tools. | Tracking tool: gives program-level visibility across migrations. It coordinates and reports status rather than moving workloads itself. |
+| AWS Schema Conversion Tool (AWS SCT) | Converts database schemas, SQL code, and some ETL processes so workloads can move to AWS database targets such as Aurora, Amazon RDS, or Amazon Redshift. | Conversion tool: use it when changing database engines or modernizing database code. It prepares the schema, while DMS typically handles the data movement. |
+| AWS Snow Family | Physical devices for offline data transfer and edge processing when moving large datasets over the network would be too slow, costly, or impractical. | Offline transfer and edge device family: use it for remote sites, limited bandwidth, disconnected environments, or petabyte-scale moves rather than normal online migration. |
+
+Study shortcut: Application Discovery Service tells you what you have, Migration Evaluator tells you whether the move makes financial sense, Migration Hub tracks the migration program, Application Migration Service moves whole servers, AWS DMS moves database data, AWS SCT converts schemas and related code, and AWS Snow Family handles offline transfer and edge cases.
+
+Current AWS docs note that AWS Application Discovery Service and AWS Migration Hub are no longer open to new customers, but the distinctions above are still useful for understanding older AWS migration tooling and exam-style service roles.
 
 ## Networking and Content Delivery
 
