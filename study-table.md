@@ -53,9 +53,9 @@ Concise study summaries based on current official AWS product and documentation 
 
 | Service | Very short description |
 | --- | --- |
-| Amazon Elastic Container Registry (Amazon ECR) | Managed container image registry. |
-| Amazon Elastic Container Service (Amazon ECS) | Managed container orchestration service. |
-| Amazon Elastic Kubernetes Service (Amazon EKS) | Managed Kubernetes on AWS. |
+| Amazon Elastic Container Registry (Amazon ECR) | Managed container image registry for ECS, EKS, and other runtimes. |
+| Amazon Elastic Container Service (Amazon ECS) | Managed container orchestration service that can run on EC2 or Fargate. |
+| Amazon Elastic Kubernetes Service (Amazon EKS) | Managed Kubernetes on AWS that can run with EC2 or Fargate. |
 
 ## Customer Enablement
 
@@ -84,6 +84,10 @@ Concise study summaries based on current official AWS product and documentation 
 | AWS X-Ray | Trace and analyze application requests. |
 
 ## End User Computing
+
+For differentiation: Amazon AppStream 2.0 documentation now describes the service as Amazon WorkSpaces Applications, a fully managed application streaming service that gives users instant access to desktop applications without giving them a full desktop. Amazon WorkSpaces is for full virtual desktops, including persistent personal desktops or non-persistent pooled desktops, that users access from devices or web browsers. Amazon WorkSpaces Secure Browser, previously called WorkSpaces Web, is narrower than both: AWS documentation describes it as a fully managed hosted browser service for secure access to internal websites and SaaS apps.
+
+In short: AppStream 2.0 is for individual apps, WorkSpaces is for complete desktops, and Secure Browser is for browser-based access only.
 
 | Service | Very short description |
 | --- | --- |
@@ -125,10 +129,10 @@ Concise study summaries based on current official AWS product and documentation 
 | --- | --- |
 | AWS Auto Scaling | Automatically adjust resource capacity. |
 | AWS CloudFormation | Infrastructure as code with templates. |
-| AWS CloudTrail | Record AWS API and account activity. |
-| Amazon CloudWatch | Metrics, logs, alarms, and observability. |
+| AWS CloudTrail | Record AWS API and account activity across services. |
+| Amazon CloudWatch | Metrics, logs, alarms, and observability across AWS workloads. |
 | AWS Compute Optimizer | Rightsizing recommendations for AWS resources. |
-| AWS Config | Track configurations and compliance. |
+| AWS Config | Track AWS resource configurations, changes, and compliance. |
 | AWS Control Tower | Set up and govern multi-account AWS environments. |
 | AWS Health Dashboard | Personalized AWS health events and notices. |
 | AWS License Manager | Track and control software licenses. |
@@ -170,33 +174,33 @@ Concise study summaries based on current official AWS product and documentation 
 
 ## Security, Identity, and Compliance
 
-| Service | Very short description |
-| --- | --- |
-| AWS Artifact | On-demand AWS compliance reports and agreements. |
-| AWS Audit Manager | Collect audit evidence continuously. |
-| AWS Certificate Manager (ACM) | Provision and manage TLS certificates. |
-| AWS CloudHSM | Dedicated hardware security modules. |
-| Amazon Cognito | User sign-up, sign-in, and access control. |
-| Amazon Detective | Investigate security findings visually. |
-| AWS Directory Service | Managed Microsoft AD and directory options. |
-| AWS Firewall Manager | Centrally manage firewall rules and protections. |
-| Amazon GuardDuty | Intelligent threat detection for AWS. |
-| AWS Identity and Access Management (IAM) | Manage access with users, roles, and policies. |
-| AWS IAM Identity Center | Workforce access and single sign-on. |
-| Amazon Inspector | Automated vulnerability and exposure scanning. |
-| AWS Key Management Service (AWS KMS) | Create and control encryption keys. |
-| Amazon Macie | Discover and protect sensitive data in S3. |
-| AWS Resource Access Manager (AWS RAM) | Share AWS resources across accounts. |
-| AWS Secrets Manager | Store and rotate secrets securely. |
-| AWS Security Hub | Centralize security findings and posture. |
-| AWS Shield | Managed DDoS protection. |
-| AWS WAF | Web application firewall for HTTP apps. |
+| Service | Very short description | How to tell it apart |
+| --- | --- | --- |
+| AWS Artifact | On-demand AWS compliance reports and agreements. | Read AWS compliance reports and accept agreements. |
+| AWS Audit Manager | Collect audit evidence continuously. | Automates evidence collection for audits and assessments. |
+| AWS Certificate Manager (ACM) | Provision and manage TLS certificates. | For SSL/TLS certificates, not keys or secrets. |
+| AWS CloudHSM | Dedicated hardware security modules. | Single-tenant HSM control when you manage the hardware-backed keys. |
+| Amazon Cognito | User sign-up, sign-in, and access control. | Customer app identity for end users and apps. |
+| Amazon Detective | Investigate security findings visually. | Investigates findings using log data from AWS resources. |
+| AWS Directory Service | Managed Microsoft AD and directory options. | Managed Active Directory for AD-dependent workloads. |
+| AWS Firewall Manager | Centrally manage firewall rules and protections. | Pushes WAF and firewall policies across accounts and resources. |
+| Amazon GuardDuty | Intelligent threat detection for AWS. | Detects threats and produces findings. |
+| AWS Identity and Access Management (IAM) | Manage access with users, roles, and policies. | Core AWS permissions service for users, roles, and policies. |
+| AWS IAM Identity Center | Workforce access and single sign-on. | Workforce SSO and centralized multi-account access. |
+| Amazon Inspector | Automated vulnerability and exposure scanning. | Scans EC2, container images, Lambda, and code repositories. |
+| AWS Key Management Service (AWS KMS) | Create and control encryption keys. | Managed encryption keys and cryptographic operations. |
+| Amazon Macie | Discover and protect sensitive data in S3. | Focused on sensitive data discovery in S3. |
+| AWS Resource Access Manager (AWS RAM) | Share AWS resources across accounts. | Shares resources across AWS accounts. |
+| AWS Secrets Manager | Store and rotate secrets securely. | Stores and rotates passwords, API keys, and secrets. |
+| AWS Security Hub | Centralize security findings and posture. | Aggregates signals from AWS and partner security tools. |
+| AWS Shield | Managed DDoS protection. | For DDoS protection, especially advanced mitigation. |
+| AWS WAF | Web application firewall for HTTP apps. | Blocks web exploits, bots, and bad HTTP requests. |
 
 ## Serverless
 
 | Service | Very short description |
 | --- | --- |
-| AWS Fargate | Serverless compute for containers. |
+| AWS Fargate | Serverless compute for containers used by ECS or EKS. |
 | AWS Lambda | Run code without managing servers. |
 
 ## Storage
