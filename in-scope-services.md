@@ -51,7 +51,7 @@ In short: use CUR when you need raw, comprehensive data for custom reporting, ch
 | --- | --- |
 | AWS Batch | Run and scale batch computing jobs. |
 | Amazon EC2 | Resizable virtual servers in the cloud. |
-| AWS Elastic Beanstalk | Managed platform for quickly deploying and scaling traditional web apps and APIs without managing the underlying infrastructure yourself. |
+| AWS Elastic Beanstalk | Managed platform for quickly deploying and scaling traditional web apps and APIs without managing the underlying infrastructure yourself. (PaaS) |
 | AWS Lambda | Serverless compute for event-driven code, APIs, automation, and data processing without managing servers or clusters. |
 | Amazon Lightsail | Low-cost simplified VPS platform for small websites, blogs, dev/test environments, and basic business apps with predictable monthly pricing. |
 | AWS Outposts | Extends AWS infrastructure on premises for hybrid workloads that need low latency to local systems, local processing, or data residency. |
@@ -181,7 +181,7 @@ Study shortcut: Organizations manages accounts, Control Tower sets up and govern
 | Migration Evaluator | Builds a data-driven migration business case by analyzing on-premises inventory, utilization, licensing, and projected AWS costs. | Cost-assessment tool: use it before migration to estimate savings, target sizing, and the financial case. It does not perform the migration. |
 | AWS Migration Hub | Central place to discover servers, group them into applications, and track migration progress across multiple AWS migration tools. | Tracking tool: gives program-level visibility across migrations. It coordinates and reports status rather than moving workloads itself. |
 | AWS Schema Conversion Tool (AWS SCT) | Converts database schemas, SQL code, and some ETL processes so workloads can move to AWS database targets such as Aurora, Amazon RDS, or Amazon Redshift. | Conversion tool: use it when changing database engines or modernizing database code. It prepares the schema, while DMS typically handles the data movement. |
-| AWS Snow Family | Physical devices for offline data transfer and edge processing when moving large datasets over the network would be too slow, costly, or impractical. | Offline transfer and edge device family: use it for remote sites, limited bandwidth, disconnected environments, or petabyte-scale moves rather than normal online migration. |
+| AWS Snow Family (aka Snowball) | Physical devices for offline data transfer and edge processing when moving large datasets over the network would be too slow, costly, or impractical. | Offline transfer and edge device family: use it for remote sites, limited bandwidth, disconnected environments, or petabyte-scale moves rather than normal online migration. |
 
 Study shortcut: Application Discovery Service tells you what you have, Migration Evaluator tells you whether the move makes financial sense, Migration Hub tracks the migration program, Application Migration Service moves whole servers, AWS DMS moves database data, AWS SCT converts schemas and related code, and AWS Snow Family handles offline transfer and edge cases.
 
