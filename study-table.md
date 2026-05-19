@@ -14,6 +14,10 @@ Concise study summaries based on current official AWS product and documentation 
 | Amazon QuickSight | Serverless business intelligence dashboards and analytics. |
 | Amazon Redshift | Cloud data warehouse for analytics. |
 
+These services can work together, but they do not all serve the same role. A common pattern is to use Amazon Kinesis for real-time streaming data, AWS Glue to discover, prepare, move, and catalog data, Amazon Athena to run serverless SQL directly on data in Amazon S3, Amazon Redshift for warehouse-style analytics on curated data, and Amazon QuickSight to present insights in dashboards. Use Amazon OpenSearch Service when the main need is search, log analytics, or observability rather than warehouse BI, and use Amazon EMR when you need open-source big-data frameworks such as Spark, Trino, Flink, or Hive with more processing flexibility.
+
+In short: Kinesis for streaming, Glue for data integration, Athena for querying data where it lives, Redshift for data warehousing, QuickSight for BI, OpenSearch for search and log analytics, and EMR for large-scale customizable big-data processing.
+
 ## Application Integration
 
 | Service | Short description |
@@ -35,9 +39,11 @@ Concise study summaries based on current official AWS product and documentation 
 | Service | Short description |
 | --- | --- |
 | AWS Budgets | Set and track cost or usage budgets. |
-| AWS Cost and Usage Reports | Detailed billing and usage exports. |
-| AWS Cost Explorer | Analyze and forecast AWS spending. |
+| AWS Cost and Usage Reports (CUR) | CUR is the detailed underlying dataset. It exports cost and usage data to your Amazon S3 bucket in CSV or Parquet so you can do custom analysis with tools such as Amazon Athena, Amazon Redshift, Amazon QuickSight, or spreadsheets. |
+| AWS Cost Explorer | Built-in interface and API for visualizing, filtering, grouping, and forecasting AWS spending over time. |
 | AWS Marketplace | Buy and deploy third-party software on AWS. |
+
+In short: use CUR when you need raw, comprehensive data for custom reporting, chargeback, or deep analysis; use Cost Explorer when you want quick charts, trend analysis, and forecasts without building your own reporting pipeline.
 
 ## Compute
 
@@ -45,9 +51,9 @@ Concise study summaries based on current official AWS product and documentation 
 | --- | --- |
 | AWS Batch | Run and scale batch computing jobs. |
 | Amazon EC2 | Resizable virtual servers in the cloud. |
-| AWS Elastic Beanstalk | Deploy and scale web apps simply. |
-| Amazon Lightsail | Simplified VPS, storage, and networking. |
-| AWS Outposts | AWS infrastructure and services on premises. |
+| AWS Elastic Beanstalk | Managed platform for quickly deploying and scaling traditional web apps and APIs without managing the underlying infrastructure yourself. |
+| Amazon Lightsail | Low-cost simplified VPS platform for small websites, blogs, dev/test environments, and basic business apps with predictable monthly pricing. |
+| AWS Outposts | Extends AWS infrastructure on premises for hybrid workloads that need low latency to local systems, local processing, or data residency. |
 
 ## Containers
 
@@ -85,21 +91,21 @@ Concise study summaries based on current official AWS product and documentation 
 
 ## End User Computing
 
-For differentiation: Amazon AppStream 2.0 documentation now describes the service as Amazon WorkSpaces Applications, a fully managed application streaming service that gives users instant access to desktop applications without giving them a full desktop. Amazon WorkSpaces is for full virtual desktops, including persistent personal desktops or non-persistent pooled desktops, that users access from devices or web browsers. Amazon WorkSpaces Secure Browser, previously called WorkSpaces Web, is narrower than both: AWS documentation describes it as a fully managed hosted browser service for secure access to internal websites and SaaS apps.
-
-In short: AppStream 2.0 is for individual apps, WorkSpaces is for complete desktops, and Secure Browser is for browser-based access only.
-
 | Service | Short description |
 | --- | --- |
 | Amazon AppStream 2.0 | Stream desktop apps to web browsers. |
 | Amazon WorkSpaces | Managed cloud virtual desktops. |
 | Amazon WorkSpaces Secure Browser | Managed isolated browser sessions. |
 
+For differentiation: Amazon AppStream 2.0 documentation now describes the service as Amazon WorkSpaces Applications, a fully managed application streaming service that gives users instant access to desktop applications without giving them a full desktop. Amazon WorkSpaces is for full virtual desktops, including persistent personal desktops or non-persistent pooled desktops, that users access from devices or web browsers. Amazon WorkSpaces Secure Browser, previously called WorkSpaces Web, is narrower than both: AWS documentation describes it as a fully managed hosted browser service for secure access to internal websites and SaaS apps.
+
+In short: AppStream 2.0 is for individual apps, WorkSpaces is for complete desktops, and Secure Browser is for browser-based access only.
+
 ## Frontend Web and Mobile
 
 | Service | Short description |
 | --- | --- |
-| AWS Amplify | Build and host full-stack web and mobile apps. |
+| AWS Amplify | Frontend and full-stack web/mobile platform with managed hosting, Git-based workflows, CI/CD, and integrated app features such as auth, data, storage, and functions. |
 | AWS AppSync | Managed GraphQL APIs with real-time data sync. |
 
 ## Internet of Things (IoT)
