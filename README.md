@@ -6,4 +6,4 @@ Small study materials for the AWS Certified Cloud Practitioner (CLF-C02) exam.
 - `in-scope-services.md`: concise summaries of AWS services in scope for the exam.
 - `clf-c02-practice-exam.html`: a browser-based practice exam you can open locally.
 
-Open `clf-c02-practice-exam.html` in a web browser to use the quiz.
+Open [`clf-c02-practice-exam.html`](https://jeanplevesque.github.io/AWS-CLF-C02/clf-c02-practice-exam.html) in a web browser to use the quiz.
