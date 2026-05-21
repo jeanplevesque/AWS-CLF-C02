@@ -2,7 +2,7 @@
 
 Exam-focused notes for AWS Cloud Practitioner topics that are not already covered in [in-scope-services.md](./in-scope-services.md).
 
-Checked: 2026-05-19
+Checked: 2026-05-21
 
 ## 1. Core Cloud Ideas
 
@@ -52,7 +52,33 @@ AWS Well-Architected helps you evaluate workloads against best practices.
 
 - Secure, reliable, cost-aware, efficient, sustainable, and operationally mature.
 
-## 4. Shared Responsibility Model
+## 4. AWS Cloud Adoption Framework (AWS CAF)
+
+- AWS CAF helps organizations accelerate cloud-powered digital transformation using AWS best practices.
+- Use AWS CAF to identify and prioritize transformation opportunities, assess cloud readiness, and iteratively build a transformation roadmap.
+
+### The 6 perspectives
+
+- Business: align cloud adoption with business goals and measurable outcomes.
+- People: address culture, leadership, organizational change, and workforce skills.
+- Governance: guide decision-making, risk management, compliance, and value realization.
+- Platform: build and modernize an enterprise-grade cloud foundation.
+- Security: protect data and workloads while maintaining confidentiality, integrity, and availability.
+- Operations: run and support cloud services at a level that meets business needs.
+
+### Transformation phases
+
+- Envision: identify and prioritize cloud transformation opportunities.
+- Align: find capability gaps, dependencies, and readiness improvements.
+- Launch: deliver pilots in production and prove business value.
+- Scale: expand adoption and sustain the benefits.
+
+### Exam shortcut
+
+- AWS CAF = organization and transformation readiness.
+- Well-Architected = workload design and operational best practices.
+
+## 5. Shared Responsibility Model
 
 - AWS is responsible for security of the cloud.
 - The customer is responsible for security in the cloud.
@@ -75,7 +101,7 @@ AWS Well-Architected helps you evaluate workloads against best practices.
 - Managed service means AWS does more.
 - EC2 means customer does more than with a serverless service such as Lambda.
 
-## 5. IAM and Access Basics
+## 6. IAM and Access Basics
 
 - Root user: full account access; do not use for everyday work.
 - IAM user: identity for a specific person or application.
@@ -97,7 +123,7 @@ AWS Well-Architected helps you evaluate workloads against best practices.
 - IAM: account-level identities and permissions for AWS access.
 - IAM Identity Center: workforce SSO and centralized access across multiple AWS accounts and applications.
 
-## 6. Network Security Concepts
+## 7. Network Security Concepts
 
 ### Security groups vs network ACLs
 
@@ -115,7 +141,7 @@ AWS Well-Architected helps you evaluate workloads against best practices.
 - Because NACLs are stateless, return traffic must be allowed explicitly.
 - Because security groups are stateful, return traffic is automatically allowed.
 
-## 7. S3 Basics You Should Know
+## 8. S3 Basics You Should Know
 
 ### Core storage types
 
@@ -148,7 +174,7 @@ AWS Well-Architected helps you evaluate workloads against best practices.
 - Need archival storage: S3 Glacier storage classes.
 - Need changing-access optimization without manual tier selection: S3 Intelligent-Tiering.
 
-## 8. EC2 Pricing and Capacity Concepts
+## 9. EC2 Pricing and Capacity Concepts
 
 - On-Demand: pay as you go, no long-term commitment.
 - Savings Plans: commit to consistent usage in dollars per hour for 1 or 3 years.
@@ -165,7 +191,7 @@ AWS Well-Architected helps you evaluate workloads against best practices.
 - Fault-tolerant interruptible workload: Spot.
 - Specific host or license requirement: Dedicated Hosts.
 
-## 9. Migration and Modernization
+## 10. Migration and Modernization
 
 ### The 7 Rs of migration
 
@@ -185,7 +211,7 @@ AWS Well-Architected helps you evaluate workloads against best practices.
 - App no longer needed: retire.
 - Cannot move yet for business, technical, or compliance reasons: retain.
 
-## 10. Pricing, Billing, and Support Concepts
+## 11. Pricing, Billing, and Support Concepts
 
 ### Cost ideas
 
@@ -219,7 +245,7 @@ AWS Well-Architected helps you evaluate workloads against best practices.
 - Paid plans add faster response times, guidance, and broader support coverage.
 - Enterprise-level plans include the highest support level and more proactive guidance.
 
-## 11. Resilience, Availability, and Disaster Recovery
+## 12. Resilience, Availability, and Disaster Recovery
 
 - High availability: keep workloads available despite failures, often across multiple AZs.
 - Fault tolerance: keep operating even when components fail.
@@ -234,7 +260,7 @@ AWS Well-Architected helps you evaluate workloads against best practices.
 - Multi-Region improves geographic resilience.
 - Backups help recovery, but they are not the same as high availability.
 
-## 12. Quick Compare Table
+## 13. Quick Compare Table
 
 | Need | Best-fit concept |
 | --- | --- |
@@ -254,6 +280,8 @@ AWS Well-Architected helps you evaluate workloads against best practices.
 ## Sources Checked
 
 - https://aws.amazon.com/architecture/well-architected/
+- https://aws.amazon.com/cloud-adoption-framework/
+- https://docs.aws.amazon.com/whitepapers/latest/overview-aws-cloud-adoption-framework/welcome.html
 - https://aws.amazon.com/compliance/shared-responsibility-model/
 - https://aws.amazon.com/s3/
 - https://aws.amazon.com/s3/storage-classes/
